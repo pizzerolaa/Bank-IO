@@ -3,9 +3,8 @@ import { ScrollView, View, StyleSheet } from 'react-native';
 import { TextInput, Button, RadioButton, Switch, Text, HelperText, Card, Title, Paragraph, useTheme } from 'react-native-paper';
 import { Calendar, Clock, MapPin, MessageSquare, AlertTriangle } from 'lucide-react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
-import { white } from 'react-native-paper/lib/typescript/styles/themes/v2/colors';
 
-function NewDonationForm() {
+function NewDonationForm({ navigation }) {
   const theme = useTheme();
   const [foodType, setFoodType] = useState('perishable');
   const [quantity, setQuantity] = useState('');
@@ -160,7 +159,7 @@ function NewDonationForm() {
         mode="contained" 
         style={styles.submitButton}
         icon={() => <AlertTriangle color={theme.colors.background} />}
-        onPress={() => console.log('Donación enviada')}
+        onPress={() => navigation.navigate('DonationConfirmation')}
       >
         Enviar Donación
       </Button>
