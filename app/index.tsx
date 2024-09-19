@@ -5,6 +5,7 @@ import LoginScreen from './pages/Login'; // Asegúrate de que la ruta es correct
 import HomePage from './pages/Home'; // Asegúrate de que la ruta es correcta
 import NewDonationForm from './pages/home_pages/new_donation';
 import DonationConf from './pages/home_pages/donation_confirmation';
+import PrevDonations from './pages/home_pages/prev_donations';
 
 const Stack = createNativeStackNavigator();
 
@@ -16,6 +17,7 @@ function App() {
         <Stack.Screen name="Home" component={HomePage} options={{headerShown: false}}/>
         <Stack.Screen name="NewDonation" component={NewDonationForm} options={{headerShown: false}}/>
         <Stack.Screen name="DonationConfirmation" component={DonationConf} options={{ headerShown: false }}/>
+        <Stack.Screen name="PrevDonations" component={PrevDonations} options={{headerShown: false}}/>
       </Stack.Navigator>
     </NavigationContainer>
   );

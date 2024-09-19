@@ -8,7 +8,7 @@ function HomeScreen({ navigation }) {
 
   const homeItems = [
     { title: 'Crear nueva donación', icon: Gift, description: 'Inicia una nueva donación ahora', route: 'NewDonation' },
-    { title: 'Ver donaciones anteriores', icon: Clock, description: 'Revisa el historial de tus donaciones' },
+    { title: 'Ver donaciones anteriores', icon: Clock, description: 'Revisa el historial de tus donaciones', route: 'PrevDonations' },
     { title: 'Ver recompensas', icon: Award, description: 'Descubre tus reconocimientos' },
     { title: 'Consultar impacto', icon: PieChart, description: 'Mira cómo tus donaciones hacen la diferencia' },
     { title: 'Solicitar recolección', icon: Truck, description: 'Programa una recolección a domicilio' },
