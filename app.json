@@ -5,6 +5,7 @@
       "bundler": "metro"
     },
     "plugins": [
+      "expo-font",
       "expo-router"
     ],
     "name": "Bank-IO",
