@@ -8,6 +8,7 @@ import DonationConf from './pages/home_pages/donation_confirmation';
 import PrevDonations from './pages/home_pages/prev_donations';
 import SeeRewards from './pages/home_pages/see_Rewards';
 import DonationTracking from './pages/home_pages/donation_tracking';
+import DonationImpact from './pages/home_pages/donation_impact';
 
 const Stack = createNativeStackNavigator();
 
@@ -22,6 +23,7 @@ function App() {
         <Stack.Screen name="PrevDonations" component={PrevDonations} options={{headerShown: false}}/>
         <Stack.Screen name="SeeRewards" component={SeeRewards} options={{headerShown: false}}/>
         <Stack.Screen name="DonationTracking" component={DonationTracking} options={{headerShown: false}}/>
+        <Stack.Screen name="DonationImpact" component={DonationImpact} options={{headerShown: false}}/>
       </Stack.Navigator>
     </NavigationContainer>
   );

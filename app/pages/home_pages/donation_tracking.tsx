@@ -1,6 +1,6 @@
 import React from "react";
 import { View, ScrollView, StyleSheet } from "react-native";
-import { Card, Title, Paragraph, useTheme, Avatar, List } from "react-native-paper";
+import { Card, Title, Paragraph, useTheme, Avatar, List, Button } from "react-native-paper";
 import { Calendar, Truck, Package, Users, Bell, Scroll } from "lucide-react-native";
 
 const steps = [
@@ -20,7 +20,7 @@ function DonationTracking({ navigation }) {
 
     return (
         <ScrollView style={styles.container}>
-            <Title style={styles.title}>{"\n"}Seguimiento de Donación{"\n"}</Title>
+            <Title style={styles.title}>Seguimiento de Donación</Title>
 
             <Card style={styles.timelineCard}>
                 <Card.Content>
@@ -59,6 +59,10 @@ function DonationTracking({ navigation }) {
                     </List.Section>
                 </Card.Content>
             </Card>
+
+            <View style={{ alignItems: 'center' }}>
+                <Button mode="contained" style={styles.button} onPress={() => navigation.navigate('Home')}>Volver al Inicio</Button>
+            </View>
         </ScrollView>
     );
 }
@@ -126,4 +130,10 @@ const styles = StyleSheet.create({
       marginBottom: 16,
       backgroundColor: '#ececec',
     },
+    button: {
+      marginTop: 20,
+      backgroundColor: '#e02e2e',
+      borderRadius: 30,
+      elevation: 3,
+  },
   });

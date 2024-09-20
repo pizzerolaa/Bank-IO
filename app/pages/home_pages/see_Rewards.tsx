@@ -2,7 +2,7 @@ import React from "react";
 import { View, TextInput, Text, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
 import { Button, Title } from "react-native-paper";
 
-function seeRewards({ navigation }) {
+function SeeRewards({ navigation }) {
     return(
         <ScrollView style={styles.container}>
             <Text style={styles.title}>{"\n"}Recompensas{"\n"}</Text>
@@ -15,7 +15,7 @@ function seeRewards({ navigation }) {
     );
 }
 
-export default seeRewards;
+export default SeeRewards;
 
 const styles = StyleSheet.create({
     container: {
