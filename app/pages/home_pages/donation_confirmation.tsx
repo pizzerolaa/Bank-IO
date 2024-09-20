@@ -8,9 +8,13 @@ function DonationConf({ navigation }) {
         <View style={styles.container}>
             <Title style={styles.title}>¡Donación Exitosa!</Title>
             <BadgeCheck color="#e02e2e" size={120} />
-            <Text style={styles.text}>{"\n"}Gracias por tu donación. Tu ayuda es muy valiosa para nosotros.{"\n"}</Text>
+            <Text style={styles.text}>{"\n"}Gracias por tu donación. Tu ayuda es muy valiosa para nosotros.{"\n"}{"\n"}</Text>
+            <Button style={styles.button} mode="contained" onPress={() => navigation.navigate('DonationTracking')}>Estado de donación</Button>
+            <Text>{"\n"}</Text>
             <Button style={styles.button} mode="contained" onPress={() => navigation.navigate('Home')}>Volver al Inicio</Button>
         </View>
+
+        //FALTA AGREGAR LA FUNCIONALIDAD DE CREACION DE CODIGOS QR
     );
 }
 

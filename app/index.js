@@ -6,6 +6,8 @@ import HomePage from './pages/Home'; // Asegúrate de que la ruta es correcta
 import NewDonationForm from './pages/home_pages/new_donation';
 import DonationConf from './pages/home_pages/donation_confirmation';
 import PrevDonations from './pages/home_pages/prev_donations';
+import SeeRewards from './pages/home_pages/see_Rewards';
+import DonationTracking from './pages/home_pages/donation_tracking';
 
 const Stack = createNativeStackNavigator();
 
@@ -18,6 +20,8 @@ function App() {
         <Stack.Screen name="NewDonation" component={NewDonationForm} options={{headerShown: false}}/>
         <Stack.Screen name="DonationConfirmation" component={DonationConf} options={{ headerShown: false }}/>
         <Stack.Screen name="PrevDonations" component={PrevDonations} options={{headerShown: false}}/>
+        <Stack.Screen name="SeeRewards" component={SeeRewards} options={{headerShown: false}}/>
+        <Stack.Screen name="DonationTracking" component={DonationTracking} options={{headerShown: false}}/>
       </Stack.Navigator>
     </NavigationContainer>
   );
