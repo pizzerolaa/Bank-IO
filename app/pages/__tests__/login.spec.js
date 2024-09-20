@@ -19,6 +19,7 @@ test('verifica si la vista de login existe', () => {
 
 });
 
+//hols
 test('verifica si la vista de home existe', () => {
   const navigation = { navigate: jest.fn() }; // Mock de navegación
   const { getByTestId } = render(<HomeScreen navigation={navigation} />);
