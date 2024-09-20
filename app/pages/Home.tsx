@@ -15,9 +15,9 @@ function HomeScreen({ navigation }) {
   ];
 
   return (
-    <ScrollView style={styles.container} testID="Home-screen" >
+    <ScrollView style={styles.container} >
       <Title style={styles.title}>{"\n"}Panel de Control{"\n"}</Title>
-      <View style={styles.grid}>
+      <View style={styles.grid} testID="Home-screen">
       {homeItems.map((item, index) => (
           <Card key={index} style={styles.card} onPress={() => navigation.navigate(item.route)}>
             <Card.Content style={styles.cardContent}>

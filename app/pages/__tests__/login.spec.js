@@ -1,6 +1,9 @@
 import React from 'react';
 import { render } from '@testing-library/react-native';
-import LoginScreen from '../Login'; // Ajusta la ruta según sea necesario
+import HomeScreen from '../Home'; 
+import LoginScreen from '../Login'; 
+
+
 
 test('simple test', () => {
   expect(true).toBe(true);
@@ -14,4 +17,12 @@ test('verifica si la vista de login existe', () => {
   expect(loginScreen).toBeTruthy();
 
 
+});
+
+test('verifica si la vista de home existe', () => {
+  const navigation = { navigate: jest.fn() }; // Mock de navegación
+  const { getByTestId } = render(<HomeScreen navigation={navigation} />);
+  
+  const homeScreenElement = getByTestId('Home-screen'); // Asegúrate de que coincida
+  expect(homeScreenElement).toBeTruthy();
 });
