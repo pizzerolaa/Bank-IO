@@ -79,6 +79,7 @@ const styles = StyleSheet.create({
     },
     timelineCard: {
       marginBottom: 16,
+      backgroundColor: '#ececec',
     },
     timelineItem: {
       flexDirection: 'row',
@@ -123,5 +124,6 @@ const styles = StyleSheet.create({
     },
     notificationsCard: {
       marginBottom: 16,
+      backgroundColor: '#ececec',
     },
   });
