@@ -9,7 +9,10 @@ function DonationConf({ navigation }) {
             <Title style={styles.title}>¡Donación Exitosa!</Title>
             <BadgeCheck color="#e02e2e" size={120} />
             <Text style={styles.text}>{"\n"}Gracias por tu donación. Tu ayuda es muy valiosa para nosotros.{"\n"}{"\n"}</Text>
-            <Button style={styles.button} mode="contained" onPress={() => navigation.navigate('DonationTracking')}>Estado de donación</Button>
+            <Text style={styles.text}>Tu código QR para esta donación es:{"\n"}</Text>
+            <Text style={styles.text}>1234567890{"\n"}</Text>
+            <Text style={styles.text}>Preséntalo en el lugar de recolección para completar la donación.{"\n"}</Text>
+            <Text style={styles.text}>¡Gracias por tu apoyo!{"\n"}</Text>
             <Text>{"\n"}</Text>
             <Button style={styles.button} mode="contained" onPress={() => navigation.navigate('Home')}>Volver al Inicio</Button>
         </View>

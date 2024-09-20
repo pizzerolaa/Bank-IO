@@ -11,7 +11,7 @@ function HomeScreen({ navigation }) {
     { title: 'Ver donaciones anteriores', icon: Clock, description: 'Revisa el historial de tus donaciones', route: 'PrevDonations' },
     { title: 'Ver recompensas', icon: Award, description: 'Descubre tus reconocimientos', route: 'SeeRewards' },
     { title: 'Consultar impacto', icon: PieChart, description: 'Mira cómo tus donaciones hacen la diferencia', route: 'DonationImpact' },
-    { title: 'Solicitar recolección', icon: Truck, description: 'Programa una recolección a domicilio' },
+    { title: 'Seguimiento de Donación', icon: Truck, description: 'Ve el progreso de tu donación', route: 'DonationTracking' },
   ];
 
   return (
