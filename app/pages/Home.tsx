@@ -15,7 +15,7 @@ function HomeScreen({ navigation }) {
   ];
 
   return (
-    <ScrollView style={styles.container}>
+    <ScrollView style={styles.container} testID="Home-screen" >
       <Title style={styles.title}>{"\n"}Panel de Control{"\n"}</Title>
       <View style={styles.grid}>
       {homeItems.map((item, index) => (

@@ -23,7 +23,7 @@ function LoginScreen({ navigation }) {
   '|rF?hV%2WCj[ayj[a|j[az_NaeWBj@ayfRayfQfQM{M|azj[azf6fQfQfQIpWXofj[ayj[j[fQayWCoeoeaya}j[ayfQa{oLj?j[WVj[ayayj[fQoff7azayj[ayj[j[ayofayayayj[fQj[ayayj[ayfjj[j[ayjuayj[';
 
   return (
-    <View style={styles.container}>
+    <View style={styles.container} testID="login-screen" >
         <Image
             style={styles.logo}
             source="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQDQW8JFjLTO0yjqybmN4ruKCndVXtLzABGaQ&s"
