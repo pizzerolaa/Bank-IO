@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, TextInput, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, TextInput, Text, TouchableOpacity, StyleSheet, Alert } from 'react-native';
 import { Image } from 'expo-image';
 import { Mail, Lock, User, FileText, UserCircle } from 'lucide-react-native';
 
@@ -11,9 +11,54 @@ function LoginScreen({ navigation }) {
   const [lastName, setLastName] = useState('');
   const [rfc, setRFC] = useState('');
 
-  const handleSubmit = () => {
-    console.log(isLogin ? 'Iniciando sesión...' : 'Registrando...');
-    navigation.navigate('Home');
+  const handleSubmit = async () => {
+    if (isLogin) {
+      try {
+        //login
+        const response = await fetch('http://192.168.100.161:5000/api/users/login', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ email, password}),
+        });
+
+        const data = await response.json();
+
+        if(response.ok) {
+          console.log('Inicio de sesión exitoso', data);
+          navigation.navigate('Home');
+        } else {
+          Alert.alert('Error', data.message || 'Error al iniciar sesión');
+        }
+      } catch (error) {
+        Alert.alert('Error', 'Error en la solicitud');
+      }
+    } else {
+      try {
+        //registro
+        const response = await fetch('http://192.168.100.161:5000/api/users/register', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ name: firstName, lastName: lastName, email, password, rfc }),
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+          //registro exitoso
+          console.log('Registro exitoso', data);
+          setIsLogin(true); //cambiar a pantalla de inicio de sesión
+        } else {
+          //error al registrar
+          Alert.alert('Error', data.message || 'Error al registrarse');
+        }
+      } catch (error) {
+        Alert.alert('Error', 'Error en la solicitud');
+      }
+    }
   };
 
   const handleForgotPassword = () => {

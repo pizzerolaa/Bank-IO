@@ -39,24 +39,24 @@ module.exports = { registerUser };
 
 // login de usuarios
 const loginUser = async (req, res) => {
-     const {email, password} = req.body;
+    const {email, password} = req.body;
 
-     //validamos que exista el usuario
-     const user = await User
-         .findOne({ email })
-         .select('+password');
+    //validamos que exista el usuario
+    const user = await User
+        .findOne({ email })
+        .select('+password');
     
-     if (!user) {
-         return res.status(404).json({message: 'Usuario no encontrado'});
-     }
+    if (!user) {
+        return res.status(404).json({message: 'Usuario no encontrado'});
+    }
 
-     //validamos la contraseña
-     const passwordMatch = await bcrypt.compare(password, user.password);
-     if (!passwordMatch) {
-         return res.status(401).json({message: 'Contraseña incorrecta'});
-     }
+    //validamos la contraseña
+    const passwordMatch = await bcrypt.compare(password, user.password);
+    if (!passwordMatch) {
+        return res.status(401).json({message: 'Contraseña incorrecta'});
+    }
 
-     res.json(user);
+    res.json(user);
 }
 
 module.exports = { registerUser, loginUser };
