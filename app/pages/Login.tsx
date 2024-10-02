@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { View, TextInput, Text, TouchableOpacity, StyleSheet, Alert } from 'react-native';
+import { View, TextInput, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { Image } from 'expo-image';
 import { Mail, Lock, User, FileText, UserCircle } from 'lucide-react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 function LoginScreen({ navigation }) {
   const [isLogin, setIsLogin] = useState(true);
@@ -10,53 +11,52 @@ function LoginScreen({ navigation }) {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [rfc, setRFC] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
 
   const handleSubmit = async () => {
+    setErrorMessage(''); // Limpiar mensaje de error antes de cada solicitud
     if (isLogin) {
       try {
-        //login
-        const response = await fetch('http://192.168.100.161:5000/api/users/login', {
+        const response = await fetch('http://localhost:5001/api/users/login', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({ email, password}),
-        });
-
-        const data = await response.json();
-
-        if(response.ok) {
-          console.log('Inicio de sesión exitoso', data);
-          navigation.navigate('Home');
-        } else {
-          Alert.alert('Error', data.message || 'Error al iniciar sesión');
-        }
-      } catch (error) {
-        Alert.alert('Error', 'Error en la solicitud');
-      }
-    } else {
-      try {
-        //registro
-        const response = await fetch('http://192.168.100.161:5000/api/users/register', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ name: firstName, lastName: lastName, email, password, rfc }),
+          body: JSON.stringify({ email, password }),
         });
 
         const data = await response.json();
 
         if (response.ok) {
-          //registro exitoso
-          console.log('Registro exitoso', data);
-          setIsLogin(true); //cambiar a pantalla de inicio de sesión
+          console.log('Inicio de sesión exitoso', data);
+          await AsyncStorage.setItem('userId', data.id);
+          navigation.navigate('Home');
         } else {
-          //error al registrar
-          Alert.alert('Error', data.message || 'Error al registrarse');
+          setErrorMessage(data.message || 'Error al iniciar sesión');
         }
       } catch (error) {
-        Alert.alert('Error', 'Error en la solicitud');
+        setErrorMessage('Error en la solicitud');
+      }
+    } else {
+      try {
+        const response = await fetch('http://localhost:5001/api/users/register', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ name: firstName, lastName, email, password, rfc }),
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+          console.log('Registro exitoso', data);
+          setIsLogin(true);
+        } else {
+          setErrorMessage(data.message || 'Error al registrarse');
+        }
+      } catch (error) {
+        setErrorMessage('Error en la solicitud');
       }
     }
   };
@@ -65,8 +65,7 @@ function LoginScreen({ navigation }) {
     console.log('Recuperando contraseña...');
   };
 
-  const blurhash =
-    '|rF?hV%2WCj[ayj[a|j[az_NaeWBj@ayfRayfQfQM{M|azj[azf6fQfQfQIpWXofj[ayj[j[fQayWCoeoeaya}j[ayfQa{oLj?j[WVj[ayayj[fQoff7azayj[ayj[j[ayofayayayj[fQj[ayayj[ayfjj[j[ayjuayj[';
+  const blurhash = '|rF?hV%2WCj[ayj[a|j[az_NaeWBj@ayfRayfQfQM{M|azj[azf6fQfQfQIpWXofj[ayj[j[fQayWCoeoeaya}j[ayfQa{oLj?j[WVj[ayayj[fQoff7azayj[ayj[j[ayofayayayj[fQj[ayayj[ayfjj[j[ayjuayj[';
 
   return (
     <View style={styles.container}>
@@ -78,6 +77,10 @@ function LoginScreen({ navigation }) {
         transition={1000}
       />
       <Text style={styles.title}>{isLogin ? 'Iniciar Sesión' : 'Registrarse'}</Text>
+      
+      {errorMessage ? (
+        <Text style={styles.errorText}>{errorMessage}</Text>
+      ) : null}
       
       {!isLogin && (
         <>
@@ -176,6 +179,10 @@ const styles = StyleSheet.create({
     fontSize: 24,
     marginBottom: 20,
     fontWeight: 'bold',
+  },
+  errorText: {
+    color: 'red',
+    marginBottom: 15,
   },
   inputContainer: {
     flexDirection: 'row',
