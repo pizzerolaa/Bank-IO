@@ -100,7 +100,7 @@ function NewDonationForm({ navigation }) {
   return (
     <ScrollView style={styles.container}>
       <Title style={styles.title}>Nueva Donación</Title>
-      
+
       <Card style={styles.card}>
         <Card.Content>
           <Title>Tipo de Alimento</Title>
@@ -238,7 +238,7 @@ function NewDonationForm({ navigation }) {
       </Button>
 
       <View style={styles.userIdContainer}>
-        <Text>User ID: {userId}</Text> {/* Mostrar el ID del usuario */}
+        <Text>User ID: {userId ? String(userId) : 'No ID available'}</Text>
       </View>
     </ScrollView>
   );

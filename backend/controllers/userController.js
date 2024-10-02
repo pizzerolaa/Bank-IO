@@ -64,7 +64,7 @@ const registerUser = async (req, res) => {
             email,
             password: hashedPassword,
             verificationCode, // Guardamos el código de verificación
-            verificationCodeExpires: Date.now() + 3600000, // Expira en 1 hora
+            verificationCodeExpires: Date.now() + 300000, // 5 minutos
         });
 
         // Guardamos el usuario en la base de datos
