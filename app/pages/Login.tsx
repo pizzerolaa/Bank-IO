@@ -11,52 +11,73 @@ function LoginScreen({ navigation }) {
   const [lastName, setLastName] = useState('');
   const [rfc, setRFC] = useState('');
 
+  const validateForm = () => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const passwordRegex = /^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$/;
+    if (!email.trim() || !password.trim() || (!isLogin && (!firstName.trim() || !lastName.trim() || !rfc.trim()))) {
+      Alert.alert('Error', 'Todos los campos son obligatorios');
+      return false;
+    }
+    if (!emailRegex.test(email)) {
+      Alert.alert('Error', 'Ingresa un correo válido.');
+      return false;
+    }
+    if (!passwordRegex.test(password)) {
+      Alert.alert('Error', 'La contraseña debe tener al menos 8 caracteres, un número, una letra mayúscula y un símbolo.');
+      return false;
+    }
+    return true;
+  };
+
+  const [errorMessage, setErrorMessage] = useState('');
+
   const handleSubmit = async () => {
+    if (!validateForm()) {
+      return;
+    }
     if (isLogin) {
       try {
-        //login
-        const response = await fetch('http://192.168.100.161:5000/api/users/login', {
+        const response = await fetch('http://localhost:5001/api/users/login', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({ email, password}),
+          body: JSON.stringify({ email, password }),
         });
 
         const data = await response.json();
 
         if(response.ok) {
           //login exitoso
-          navigation.navigate('Home');
+          Alert.alert('Login exitoso', 'Se ha enviado un código de verificación a tu correo.');
+          navigation.navigate('Verify', { email });
         } else {
-          Alert.alert('Error', data.message || 'Error al iniciar sesión');
+          setErrorMessage(data.message || 'Error al iniciar sesión');
         }
       } catch (error) {
-        Alert.alert('Error', 'Error en la solicitud');
+        setErrorMessage('Error en la solicitud');
       }
     } else {
       try {
-        //registro
-        const response = await fetch('http://192.168.100.161:5000/api/users/register', {
+        const response = await fetch('http://localhost:5001/api/users/register', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({ name: firstName, lastName: lastName, email, password, rfc }),
+          body: JSON.stringify({ name: firstName, lastName, email, password, rfc }),
         });
 
         const data = await response.json();
 
         if (response.ok) {
           //registro exitoso
-          console.log('Registro exitoso', data);
-          setIsLogin(true); //cambiar a pantalla de inicio de sesión
+          Alert.alert('Registro exitoso', 'Se ha enviado un código de verificación a tu correo.');
+          navigation.navigate('Verify', { email }); //cambiar a pantalla de inicio de sesión
         } else {
-          //error al registrar
-          Alert.alert('Error', data.message || 'Error al registrarse');
+          setErrorMessage(data.message || 'Error al registrarse');
         }
       } catch (error) {
-        Alert.alert('Error', 'Error en la solicitud');
+        setErrorMessage('Error en la solicitud');
       }
     }
   };
@@ -65,10 +86,10 @@ function LoginScreen({ navigation }) {
     console.log('Recuperando contraseña...');
   };
 
-  const blurhash =
-    '|rF?hV%2WCj[ayj[a|j[az_NaeWBj@ayfRayfQfQM{M|azj[azf6fQfQfQIpWXofj[ayj[j[fQayWCoeoeaya}j[ayfQa{oLj?j[WVj[ayayj[fQoff7azayj[ayj[j[ayofayayayj[fQj[ayayj[ayfjj[j[ayjuayj[';
+  const blurhash = '|rF?hV%2WCj[ayj[a|j[az_NaeWBj@ayfRayfQfQM{M|azj[azf6fQfQfQIpWXofj[ayj[j[fQayWCoeoeaya}j[ayfQa{oLj?j[WVj[ayayj[fQoff7azayj[ayj[j[ayofayayayj[fQj[ayayj[ayfjj[j[ayjuayj[';
 
   return (
+
     <View style={styles.container}>
       <Image
         style={styles.logo}
@@ -78,6 +99,10 @@ function LoginScreen({ navigation }) {
         transition={1000}
       />
       <Text style={styles.title}>{isLogin ? 'Iniciar Sesión' : 'Registrarse'}</Text>
+      
+      {errorMessage ? (
+        <Text style={styles.errorText}>{errorMessage}</Text>
+      ) : null}
       
       {!isLogin && (
         <>
@@ -89,6 +114,7 @@ function LoginScreen({ navigation }) {
               placeholderTextColor={'#666'}
               value={firstName}
               onChangeText={setFirstName}
+
             />
           </View>
           <View style={styles.inputContainer}>
@@ -176,6 +202,10 @@ const styles = StyleSheet.create({
     fontSize: 24,
     marginBottom: 20,
     fontWeight: 'bold',
+  },
+  errorText: {
+    color: 'red',
+    marginBottom: 15,
   },
   inputContainer: {
     flexDirection: 'row',

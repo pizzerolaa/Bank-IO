@@ -22,6 +22,14 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
+    verificationCode: {
+        type: String,
+        required: false,
+    },
+    verificationCodeExpires: {
+        type: Date,
+        required: false,
+    },
 }, {timestamps: true});
 
 module.exports = mongoose.model('User', userSchema);
