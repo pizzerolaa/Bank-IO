@@ -69,7 +69,7 @@ function NewDonationForm({ navigation }) {
     setLoading(true);
 
     try {
-      const response = await fetch('http://192.168.100.161:5000/api/donations/post', {
+      const response = await fetch('http://localhost:5001/api/donations/post', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
