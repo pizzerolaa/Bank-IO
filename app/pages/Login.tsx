@@ -26,7 +26,7 @@ function LoginScreen({ navigation }) {
         const data = await response.json();
 
         if(response.ok) {
-          console.log('Inicio de sesión exitoso', data);
+          //login exitoso
           navigation.navigate('Home');
         } else {
           Alert.alert('Error', data.message || 'Error al iniciar sesión');
