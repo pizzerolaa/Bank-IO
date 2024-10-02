@@ -15,7 +15,7 @@ const VerifyScreen = ({ route, navigation }) => {
 
         setIsSubmitting(true);  // Desactivar botón mientras se envía la solicitud
         try {
-            const response = await axios.post('http://192.168.100.161:5000/api/users/verify', {
+            const response = await axios.post('http://localhost:5001/api/users/verify', {
                 email,
                 code,
             });
