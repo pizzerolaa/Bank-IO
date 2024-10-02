@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { View, TextInput, Text, TouchableOpacity, StyleSheet, Alert } from 'react-native';
 import { Image } from 'expo-image';
 import { Mail, Lock, User, FileText, UserCircle } from 'lucide-react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 function LoginScreen({ navigation }) {
   const [isLogin, setIsLogin] = useState(true);
@@ -10,6 +11,7 @@ function LoginScreen({ navigation }) {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [rfc, setRFC] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
 
   const validateForm = () => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -29,9 +31,8 @@ function LoginScreen({ navigation }) {
     return true;
   };
 
-  const [errorMessage, setErrorMessage] = useState('');
-
   const handleSubmit = async () => {
+    setErrorMessage('');
     if (!validateForm()) {
       return;
     }
@@ -50,6 +51,7 @@ function LoginScreen({ navigation }) {
         if(response.ok) {
           //login exitoso
           Alert.alert('Login exitoso', 'Se ha enviado un código de verificación a tu correo.');
+          await AsyncStorage.setItem('userId', data.id);
           navigation.navigate('Verify', { email });
         } else {
           setErrorMessage(data.message || 'Error al iniciar sesión');

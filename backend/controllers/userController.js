@@ -98,7 +98,15 @@ const loginUser = async (req, res) => {
         return res.status(401).json({ message: 'Código de verificación requerido' });
     }
 
-    res.json({ message: 'Login exitoso. Código de verificación enviado.' });
+    //res.json({ message: 'Login exitoso. Código de verificación enviado.' });
+    // Responder con datos del usuario, incluyendo el ID
+    res.json({
+        id: user._id,
+        name: user.name,
+        lastName: user.lastName,
+        email: user.email,
+        message: 'Login exitoso. Código de verificación enviado.',
+    });
 };
 
 const verifyCode = async (req, res) => {
@@ -123,4 +131,26 @@ const verifyCode = async (req, res) => {
     }
 };
 
-module.exports = { registerUser, loginUser, verifyCode };
+const getUserById = async (req, res) => {
+    const { id } = req.params; // Asumimos que el ID se pasa como parámetro en la URL
+
+    try {
+        const user = await User.findById(id);
+        
+        if (!user) {
+            return res.status(404).json({ message: 'Usuario no encontrado' });
+        }
+
+        // Enviar solo la información necesaria
+        res.json({
+            id: user._id,
+            name: user.name,
+            lastName: user.lastName,
+            email: user.email,
+        });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
+module.exports = { registerUser, loginUser, verifyCode, getUserById };
