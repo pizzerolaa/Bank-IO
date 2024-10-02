@@ -38,7 +38,7 @@ function LoginScreen({ navigation }) {
     }
     if (isLogin) {
       try {
-        const response = await fetch('http://localhost:5001/api/users/login', {
+        const response = await fetch('http://192.168.100.161:5000/api/users/login', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -51,8 +51,9 @@ function LoginScreen({ navigation }) {
         if(response.ok) {
           //login exitoso
           Alert.alert('Login exitoso', 'Se ha enviado un código de verificación a tu correo.');
-          await AsyncStorage.setItem('userId', data.id);
+          console.log('Navigate to verify screen');
           navigation.navigate('Verify', { email });
+          await AsyncStorage.setItem('userId', data.id);
         } else {
           setErrorMessage(data.message || 'Error al iniciar sesión');
         }
@@ -61,7 +62,7 @@ function LoginScreen({ navigation }) {
       }
     } else {
       try {
-        const response = await fetch('http://localhost:5001/api/users/register', {
+        const response = await fetch('http://192.168.100.161:5000/api/users/register', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -75,6 +76,7 @@ function LoginScreen({ navigation }) {
           //registro exitoso
           Alert.alert('Registro exitoso', 'Se ha enviado un código de verificación a tu correo.');
           navigation.navigate('Verify', { email }); //cambiar a pantalla de inicio de sesión
+          await AsyncStorage.setItem('userId', data.id);
         } else {
           setErrorMessage(data.message || 'Error al registrarse');
         }

@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, Button, Alert, StyleSheet } from 'react-native';
-import axios from 'axios';
 
 const VerifyScreen = ({ route, navigation }) => {
     const [code, setCode] = useState('');
@@ -8,20 +7,32 @@ const VerifyScreen = ({ route, navigation }) => {
     const { email } = route.params;
 
     const handleVerify = async () => {
+        console.log('Verifying code...');
+
         if (!code.trim()) {
             Alert.alert('Error', 'Por favor, ingresa el código de verificación.');
             return;
         }
-
+    
         setIsSubmitting(true);  // Desactivar botón mientras se envía la solicitud
         try {
-            const response = await axios.post('http://localhost:5001/api/users/verify', {
-                email,
-                code,
-            });
+            const response = await fetch('http://192.168.100.161:5000/api/users/verify', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ email, code }),
+            })
+    
+            const data = await response.json();
 
-            Alert.alert('Verificación exitosa', 'Tu cuenta ha sido verificada.');
-            navigation.navigate('Home');  // Redirige al home después de verificar
+            if (response.ok) {
+                console.log('Código verificado:', data);
+                Alert.alert('Éxito', 'Código verificado correctamente');
+                navigation.navigate('Home');
+            } else {
+                throw new Error(data.message || 'Error al verificar el código');
+            }
         } catch (error) {
             console.error(error);
             const errorMessage = error.response?.data?.message || 'Código incorrecto o expirado';
@@ -30,6 +41,7 @@ const VerifyScreen = ({ route, navigation }) => {
             setIsSubmitting(false);  // Reactivar el botón después de recibir la respuesta
         }
     };
+    
 
     return (
         <View style={styles.container}>

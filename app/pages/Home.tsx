@@ -17,7 +17,7 @@ function HomeScreen({ navigation }) {
     try {
       const id = await AsyncStorage.getItem('userId');
       if (id) {
-        const response = await fetch(`http://localhost:50001/api/users/user/${id}`); // Cambia esta línea
+        const response = await fetch(`http://192.168.100.161:5000/api/users/user/${id}`); // Cambia esta línea
         const userData = await response.json();
         setUserName(userData.name); // Asegúrate de que 'name' sea la propiedad correcta
       }

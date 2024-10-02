@@ -83,44 +83,54 @@ const registerUser = async (req, res) => {
 const loginUser = async (req, res) => {
     const { email, password } = req.body;
 
-    const user = await User.findOne({ email }).select('+password');
-    
-    if (!user) {
-        return res.status(404).json({ message: 'Usuario no encontrado' });
-    }
+    try {
+        const user = await User.findOne({ email }).select('+password');
+        
+        if (!user) {
+            return res.status(404).json({ message: 'Usuario no encontrado' });
+        }
 
-    const passwordMatch = await bcrypt.compare(password, user.password);
-    if (!passwordMatch) {
-        return res.status(401).json({ message: 'Contraseña incorrecta' });
-    }
+        const passwordMatch = await bcrypt.compare(password, user.password);
+        if (!passwordMatch) {
+            return res.status(401).json({ message: 'Contraseña incorrecta' });
+        }
 
-    if (!user.verificationCode || user.verificationCodeExpires < Date.now()) {
-        return res.status(401).json({ message: 'Código de verificación requerido' });
-    }
+        // Generar un nuevo código de verificación cada vez que el usuario inicia sesión
+        const verificationCode = generateVerificationCode();
+        user.verificationCode = verificationCode;
+        user.verificationCodeExpires = Date.now() + 300000; // 5 minutos
 
-    //res.json({ message: 'Login exitoso. Código de verificación enviado.' });
-    // Responder con datos del usuario, incluyendo el ID
-    res.json({
-        id: user._id,
-        name: user.name,
-        lastName: user.lastName,
-        email: user.email,
-        message: 'Login exitoso. Código de verificación enviado.',
-    });
+        // Guardar el nuevo código y la fecha de expiración
+        await user.save();
+
+        // Enviar el nuevo código de verificación
+        await sendVerificationEmail(user.email, verificationCode);
+
+        res.json({
+            id: user._id,
+            name: user.name,
+            lastName: user.lastName,
+            email: user.email,
+            message: 'Login exitoso. Código de verificación enviado.',
+        });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
 };
 
-const verifyCode = async (req, res) => {
-    const {email, code} = req.body;
 
-    const user = await User.findOne({email});
+const verifyCode = async (req, res) => {
+    const { email, code } = req.body;
+
+    const user = await User.findOne({ email });
 
     if (!user) {
         return res.status(404).json({ message: 'Usuario no encontrado' });
     }
 
-    //verificamos que el código sea correcto y que no haya expirado
+    // Verificamos que el código sea correcto y que no haya expirado
     if (user.verificationCode === code && user.verificationCodeExpires > Date.now()) {
-        //codigo correcto , eliminamos el código de verificación
+        // Código correcto, eliminamos el código de verificación
         user.verificationCode = null;
         user.verificationCodeExpires = null;
         await user.save();
@@ -130,6 +140,7 @@ const verifyCode = async (req, res) => {
         return res.status(400).json({ message: 'Código incorrecto o expirado' });
     }
 };
+
 
 const getUserById = async (req, res) => {
     const { id } = req.params; // Asumimos que el ID se pasa como parámetro en la URL
