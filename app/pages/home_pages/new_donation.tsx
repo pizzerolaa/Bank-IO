@@ -1,10 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import { ScrollView, View, StyleSheet, Alert } from 'react-native';
-import { TextInput, Button, RadioButton, Switch, Text, Card, Title, Paragraph, useTheme } from 'react-native-paper';
+import React, { useState } from 'react';
+import { ScrollView, View, StyleSheet } from 'react-native';
+import { TextInput, Button, RadioButton, Switch, Text, HelperText, Card, Title, Paragraph, useTheme } from 'react-native-paper';
 import { Calendar, Clock, MapPin, MessageSquare, AlertTriangle } from 'lucide-react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { Audio } from 'expo-av'; // Importar Audio para reproducir sonidos
 
 function NewDonationForm({ navigation }) {
   const theme = useTheme();
@@ -17,125 +15,55 @@ function NewDonationForm({ navigation }) {
   const [availableTimes, setAvailableTimes] = useState('');
   const [comments, setComments] = useState('');
   const [urgent, setUrgent] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [userId, setUserId] = useState(null); // Estado para el ID del usuario
-
-  // Obtener el ID del usuario
-  useEffect(() => {
-    const fetchUserId = async () => {
-      try {
-        const id = await AsyncStorage.getItem('userId');
-        if (id) {
-          setUserId(id);
-        } else {
-          setUserId('No user ID found');
-        }
-      } catch (error) {
-        console.error('Error retrieving user ID:', error);
-        setUserId('Error retrieving ID');
-      }
-    };
-
-    fetchUserId();
-  }, []);
 
   const handleDateChange = (event, selectedDate) => {
     const currentDate = selectedDate || expirationDate;
     setShowDatePicker(false);
     setExpirationDate(currentDate);
   };
-
-  // Función para reproducir sonido
-  const playSound = async () => {
-    const { sound } = await Audio.Sound.createAsync(require('./sounds/pop.mp3'));
-    await sound.playAsync();
-  };
-
-  const handleSubmit = async () => {
-    const donationData = {
-      donor: userId, // ID del donante
-      type: foodType,
-      quantity: quantity ? quantity : null,
-      unit: unit ? unit : null,
-      expirationDate: foodType === 'perishable' ? (expirationDate ? expirationDate.toISOString() : null) : null,
-      location: location ? location : null,
-      availableTimes: availableTimes ? availableTimes : null,
-      comments: comments ? comments : null,
-      urgent,
-    };
-
-    console.log('Datos de donación a enviar:', donationData);
-
-    setLoading(true);
-
-    try {
-      const response = await fetch('http://localhost:5001/api/donations/post', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(donationData),
-      });
-
-      const data = await response.json();
-
-      if (response.ok) {
-        console.log('Donación enviada exitosamente', data);
-        await playSound(); // Reproducir sonido al enviar
-        navigation.navigate('DonationConfirmation');
-      } else {
-        console.error('Error en la respuesta:', data);
-        Alert.alert('Error', data.message || 'Error al enviar la donación');
-      }
-    } catch (error) {
-      console.error('Error en la solicitud:', error);
-      Alert.alert('Error', 'Error en la solicitud');
-    } finally {
-      setLoading(false);
-    }
-  };
-
+  
   const color = '#e02e2e';
 
   return (
     <ScrollView style={styles.container}>
       <Title style={styles.title}>Nueva Donación</Title>
 
-      <Card style={styles.card}>
-        <Card.Content>
-          <Title>Tipo de Alimento</Title>
-          <RadioButton.Group onValueChange={value => setFoodType(value)} value={foodType}>
-            <View style={styles.radioGroup}>
-              <RadioButton.Item label="Perecedero" value="perishable" color='#e02e2e'/>
-              <RadioButton.Item label="No Perecedero" value="non-perishable" color='#e02e2e' />
-            </View>
-          </RadioButton.Group>
-        </Card.Content>
-      </Card>
-
-      <Card style={styles.card}>
-        <Card.Content>
-          <Title>Cantidad</Title>
-          <View style={styles.quantityContainer}>
-            <TextInput
-              style={styles.quantityInput}
-              keyboardType="numeric"
-              value={quantity}
-              onChangeText={setQuantity}
-              placeholder="Cantidad de alimentos"
-              placeholderTextColor={'#887878'}
-              activeUnderlineColor='#FFC300'
-            />
-            <RadioButton.Group onValueChange={value => setUnit(value)} value={unit}>
-              <View style={styles.unitGroup}>
-                <RadioButton.Item label="unidades" value="units" color='#e02e2e' />
-                <RadioButton.Item label="kg" value="kg" color='#e02e2e' />
-                <RadioButton.Item label="ton" value="ton" color='#e02e2e' />
-              </View>
+        <Card style={styles.card}>
+            <Card.Content>
+            <Title>Tipo de Alimento</Title>
+            <RadioButton.Group onValueChange={value => setFoodType(value)} value={foodType}>
+                <View style={styles.radioGroup}>
+                <RadioButton.Item label="Perecedero" value="perishable" color='#e02e2e'/>
+                <RadioButton.Item label="No Perecedero" value="non-perishable" color='#e02e2e' />
+                </View>
             </RadioButton.Group>
-          </View>
-        </Card.Content>
-      </Card>
+            </Card.Content>
+        </Card>
+
+        <Card style={styles.card}>
+            <Card.Content>
+                <Title>Cantidad</Title>
+                <View style={styles.quantityContainer}>
+                <TextInput
+                    style={styles.quantityInput}
+                    keyboardType="numeric"
+                    value={quantity}
+                    onChangeText={setQuantity}
+                    placeholder="Cantidad de alimentos"
+                    placeholderTextColor={'#887878'}
+                    activeUnderlineColor='#FFC300'
+                />
+                <RadioButton.Group onValueChange={value => setUnit(value)} value={unit}>
+                    <View style={styles.unitGroup}>
+                    <RadioButton.Item label="unidades" value="units" color='#e02e2e' />
+                    <RadioButton.Item label="kg" value="kg" color='#e02e2e' />
+                    <RadioButton.Item label="ton" value="ton" color='#e02e2e' />
+                    </View>
+                </RadioButton.Group>
+                </View>
+            </Card.Content>
+        </Card>
+
 
       {foodType === 'perishable' && (
         <Card style={styles.card}>
@@ -212,7 +140,7 @@ function NewDonationForm({ navigation }) {
           <Title>Urgencia</Title>
           <View style={styles.switchContainer}>
             <Text>¿Es una donación urgente?</Text>
-            <Switch value={urgent} onValueChange={setUrgent} color='#e02e2e' />
+            <Switch value={urgent} onValueChange={setUrgent} color= '#e02e2e' />
           </View>
         </Card.Content>
       </Card>
@@ -231,20 +159,15 @@ function NewDonationForm({ navigation }) {
         mode="contained" 
         style={styles.submitButton}
         icon={() => <AlertTriangle color={theme.colors.background} />}
-        onPress={() => handleSubmit()}
-        disabled={loading} // Desactiva el botón mientras se envía
+        onPress={() => navigation.navigate('DonationConfirmation')}
       >
-        {loading ? 'Enviando...' : 'Enviar Donación'}
+        Enviar Donación
       </Button>
-
-      <View style={styles.userIdContainer}>
-        <Text>User ID: {userId}</Text> {/* Mostrar el ID del usuario */}
-      </View>
     </ScrollView>
   );
 }
 
-export default NewDonationForm;
+export default NewDonationForm; 
 
 const styles = StyleSheet.create({
   container: {
@@ -268,23 +191,23 @@ const styles = StyleSheet.create({
     justifyContent: 'space-around',
   },
   quantityContainer: {
-    flexDirection: 'column',
-    alignItems: 'center',
+    flexDirection: 'column',  // Alinea los elementos en una columna
+    alignItems: 'center',  // Alinea los elementos al centro
     marginTop: 10,
   },
   quantityInput: {
-    width: '80%',
+    width: '80%',  // Ajusta el tamaño del input para que ocupe un 80% del ancho
     height: 50,
-    backgroundColor: 'white',
+    backgroundColor: 'white',  // Color de fondo rosa
     borderRadius: 8,
     paddingHorizontal: 10,
     fontSize: 18,
-    marginBottom: 10,
+    marginBottom: 10,  // Espacio debajo del input
   },
   unitGroup: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    width: '100%',
+    flexDirection: 'row',  // Alinea los botones en fila
+    justifyContent: 'space-around',  // Distribuye uniformemente los botones
+    width: '100%',  // Asegura que ocupen el 100% del espacio disponible
   },
   switchContainer: {
     flexDirection: 'row',
@@ -295,9 +218,5 @@ const styles = StyleSheet.create({
     marginTop: 16,
     marginBottom: 32,
     backgroundColor: '#e02e2e',
-  },
-  userIdContainer: {
-    marginTop: 20,
-    alignItems: 'center',
   },
 });

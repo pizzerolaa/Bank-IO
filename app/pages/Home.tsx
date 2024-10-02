@@ -1,30 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { ScrollView, View, StyleSheet } from 'react-native';
 import { Card, Title, Paragraph, useTheme } from 'react-native-paper';
 import { Gift, Clock, Award, PieChart, Truck } from 'lucide-react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { red100 } from 'react-native-paper/lib/typescript/styles/themes/v2/colors';
 
 function HomeScreen({ navigation }) {
   const theme = useTheme();
-  const [userName, setUserName] = useState('');
-
-  useEffect(() => {
-    fetchUserName();
-  }, []);
-
-  const fetchUserName = async () => {
-    try {
-      const id = await AsyncStorage.getItem('userId');
-      if (id) {
-        const response = await fetch(`http://localhost:5001/api/users/user/${id}`); // Cambia esta línea
-        const userData = await response.json();
-        setUserName(userData.name); // Asegúrate de que 'name' sea la propiedad correcta
-      }
-    } catch (error) {
-      console.error('Error retrieving user name:', error);
-    }
-  };
 
   const homeItems = [
     { title: 'Crear nueva donación', icon: Gift, description: 'Inicia una nueva donación ahora', route: 'NewDonation' },
@@ -35,16 +15,10 @@ function HomeScreen({ navigation }) {
   ];
 
   return (
-
     <ScrollView style={styles.container}>
-      <Title style={styles.title}>
-        {"\n"}
-        {userName ? `Bienvenido ${userName}` : 'Bienvenido!'}
-        {"\n"}
-      </Title>
+      <Title style={styles.title}>{"\n"}Panel de Control{"\n"}</Title>
       <View style={styles.grid}>
-        {homeItems.map((item, index) => (
-
+      {homeItems.map((item, index) => (
           <Card key={index} style={styles.card} onPress={() => navigation.navigate(item.route)}>
             <Card.Content style={styles.cardContent}>
               <item.icon color={'#e02e2e'} size={40} />
@@ -71,8 +45,6 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginBottom: 16,
     textAlign: 'center',
-    paddingBottom: 20,
-    color: 'red'
   },
   grid: {
     flexDirection: 'row',

@@ -9,11 +9,6 @@
       "expo-router"
     ],
     "name": "Bank-IO",
-    "slug": "Bank-IO",
-    "ios": {
-      "supportsTablet": true,
-      "bundleIdentifier": "com.tuempresa.bankio",
-      "buildNumber": "1.0.0"
-    }
+    "slug": "Bank-IO"
   }
 }
