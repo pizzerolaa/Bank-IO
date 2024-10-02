@@ -35,6 +35,7 @@ function HomeScreen({ navigation }) {
   ];
 
   return (
+
     <ScrollView style={styles.container}>
       <Title style={styles.title}>
         {"\n"}
@@ -43,6 +44,7 @@ function HomeScreen({ navigation }) {
       </Title>
       <View style={styles.grid}>
         {homeItems.map((item, index) => (
+
           <Card key={index} style={styles.card} onPress={() => navigation.navigate(item.route)}>
             <Card.Content style={styles.cardContent}>
               <item.icon color={'#e02e2e'} size={40} />
