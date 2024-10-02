@@ -37,7 +37,7 @@ function LoginScreen({ navigation }) {
     }
     if (isLogin) {
       try {
-        const response = await fetch('http://localhost:5001/api/users/login', {
+        const response = await fetch('http://192.168.100.161:5000/api/users/login', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -59,7 +59,7 @@ function LoginScreen({ navigation }) {
       }
     } else {
       try {
-        const response = await fetch('http://localhost:5001/api/users/register', {
+        const response = await fetch('http://192.168.100.161:5000/api/users/register', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
