@@ -103,7 +103,14 @@ function NewDonationForm({ navigation }) {
 
       <Card style={styles.card}>
         <Card.Content>
-          <Title>Tipo de Alimento</Title>
+          <Title>Importante!!!</Title>
+          <Paragraph>Por favor, completa los siguientes campos para realizar tu donación.</Paragraph>
+        </Card.Content>
+      </Card>
+      
+      <Card style={styles.card}>
+        <Card.Content>
+          <Title>Datos del Alimento</Title>
           <RadioButton.Group onValueChange={value => setFoodType(value)} value={foodType}>
             <View style={styles.radioGroup}>
               <RadioButton.Item label="Perecedero" value="perishable" color='#e02e2e'/>

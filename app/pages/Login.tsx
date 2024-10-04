@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, TextInput, Text, TouchableOpacity, StyleSheet, Alert } from 'react-native';
+import { View, TextInput, Text, TouchableOpacity, StyleSheet, Alert, ScrollView, KeyboardAvoidingView, Platform } from 'react-native';
 import { Image } from 'expo-image';
 import { Mail, Lock, User, FileText, UserCircle } from 'lucide-react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -93,104 +93,110 @@ function LoginScreen({ navigation }) {
   const blurhash = '|rF?hV%2WCj[ayj[a|j[az_NaeWBj@ayfRayfQfQM{M|azj[azf6fQfQfQIpWXofj[ayj[j[fQayWCoeoeaya}j[ayfQa{oLj?j[WVj[ayayj[fQoff7azayj[ayj[j[ayofayayayj[fQj[ayayj[ayfjj[j[ayjuayj[';
 
   return (
-
-    <View style={styles.container}>
-      <Image
-        style={styles.logo}
-        source="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQDQW8JFjLTO0yjqybmN4ruKCndVXtLzABGaQ&s"
-        placeholder={blurhash}
-        contentFit="fill"
-        transition={1000}
-      />
-      <Text style={styles.title}>{isLogin ? 'Iniciar Sesión' : 'Registrarse'}</Text>
-      
-      {errorMessage ? (
-        <Text style={styles.errorText}>{errorMessage}</Text>
-      ) : null}
-      
-      {!isLogin && (
-        <>
-          <View style={styles.inputContainer}>
-            <User color="#666" size={20} />
-            <TextInput
-              style={styles.input}
-              placeholder="Nombre"
-              placeholderTextColor={'#666'}
-              value={firstName}
-              onChangeText={setFirstName}
-
-            />
-          </View>
-          <View style={styles.inputContainer}>
-            <UserCircle color="#666" size={20} />
-            <TextInput
-              style={styles.input}
-              placeholder="Apellido"
-              placeholderTextColor={'#666'}
-              value={lastName}
-              onChangeText={setLastName}
-            />
-          </View>
-          <View style={styles.inputContainer}>
-            <FileText color="#666" size={20} />
-            <TextInput
-              style={styles.input}
-              placeholder="RFC"
-              placeholderTextColor={'#666'}
-              value={rfc}
-              onChangeText={setRFC}
-            />
-          </View>
-        </>
-      )}
-      
-      <View style={styles.inputContainer}>
-        <Mail color="#666" size={20} />
-        <TextInput
-          style={styles.input}
-          placeholder="Email"
-          value={email}
-          onChangeText={setEmail}
-          keyboardType="email-address"
-          autoCapitalize="none"
-          placeholderTextColor={'#666'}
+    <KeyboardAvoidingView 
+      style={styles.container}
+      behavior='padding'
+      keyboardVerticalOffset={100} // Ajusta este valor según la altura de tu encabezado o logo
+    >
+      <View 
+        style={styles.container}
+      >
+        <Image
+          style={styles.logo}
+          source={{ uri: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQDQW8JFjLTO0yjqybmN4ruKCndVXtLzABGaQ&s" }} // Cambié el source para ser un objeto con uri
+          placeholder={blurhash}
+          contentFit="fill"
+          transition={1000}
         />
-      </View>
-      <View style={styles.inputContainer}>
-        <Lock color="#666" size={20} />
-        <TextInput
-          style={styles.input}
-          placeholder="Contraseña"
-          value={password}
-          onChangeText={setPassword}
-          secureTextEntry
-          placeholderTextColor={'#666'}
-        />
-      </View>
-      
-      <TouchableOpacity style={styles.button} onPress={handleSubmit}>
-        <Text style={styles.buttonText}>
-          {isLogin ? 'Iniciar Sesión' : 'Registrarse'}
-        </Text>
-      </TouchableOpacity>
-      
-      <View style={styles.toggleContainer}>
-        <Text style={styles.toggleText}>
-          {isLogin ? '¿No tienes cuenta?' : '¿Ya tienes cuenta?'}
-        </Text>
-        <TouchableOpacity onPress={() => setIsLogin(!isLogin)}>
-          <Text style={styles.toggleButton}>
-            {isLogin ? 'Regístrate' : 'Inicia Sesión'}
+        <Text style={styles.title}>{isLogin ? 'Iniciar Sesión' : 'Registrarse'}</Text>
+        
+        {errorMessage ? (
+          <Text style={styles.errorText}>{errorMessage}</Text>
+        ) : null}
+        
+        {!isLogin && (
+          <>
+            <View style={styles.inputContainer}>
+              <User color="#666" size={20} />
+              <TextInput
+                style={styles.input}
+                placeholder="Nombre"
+                placeholderTextColor={'#666'}
+                value={firstName}
+                onChangeText={setFirstName}
+              />
+            </View>
+            <View style={styles.inputContainer}>
+              <UserCircle color="#666" size={20} />
+              <TextInput
+                style={styles.input}
+                placeholder="Apellido"
+                placeholderTextColor={'#666'}
+                value={lastName}
+                onChangeText={setLastName}
+              />
+            </View>
+            <View style={styles.inputContainer}>
+              <FileText color="#666" size={20} />
+              <TextInput
+                style={styles.input}
+                placeholder="RFC"
+                placeholderTextColor={'#666'}
+                value={rfc}
+                onChangeText={setRFC}
+              />
+            </View>
+          </>
+        )}
+        
+        <View style={styles.inputContainer}>
+          <Mail color="#666" size={20} />
+          <TextInput
+            style={styles.input}
+            placeholder="Email"
+            value={email}
+            onChangeText={setEmail}
+            keyboardType="email-address"
+            autoCapitalize="none"
+            placeholderTextColor={'#666'}
+          />
+        </View>
+        <View style={styles.inputContainer}>
+          <Lock color="#666" size={20} />
+          <TextInput
+            style={styles.input}
+            placeholder="Contraseña"
+            value={password}
+            onChangeText={setPassword}
+            secureTextEntry
+            placeholderTextColor={'#666'}
+          />
+        </View>
+        
+        <TouchableOpacity style={styles.button} onPress={handleSubmit}>
+          <Text style={styles.buttonText}>
+            {isLogin ? 'Iniciar Sesión' : 'Registrarse'}
           </Text>
         </TouchableOpacity>
+        
+        <View style={styles.toggleContainer}>
+          <Text style={styles.toggleText}>
+            {isLogin ? '¿No tienes cuenta?' : '¿Ya tienes cuenta?'}
+          </Text>
+          <TouchableOpacity onPress={() => setIsLogin(!isLogin)}>
+            <Text style={styles.toggleButton}>
+              {isLogin ? 'Regístrate' : 'Inicia Sesión'}
+            </Text>
+          </TouchableOpacity>
+        </View>
+        
+        {isLogin && (
+          <TouchableOpacity onPress={handleForgotPassword} style={styles.forgotPassword}>
+            <Text style={styles.forgotPasswordText}>¿Olvidaste tu contraseña?</Text>
+          </TouchableOpacity>
+        )}
       </View>
-      
-      {isLogin && (
-        <TouchableOpacity onPress={handleForgotPassword} style={styles.forgotPassword}>
-          <Text style={styles.forgotPasswordText}>¿Olvidaste tu contraseña?</Text>
-        </TouchableOpacity>
-      )}
-    </View>
+    </KeyboardAvoidingView>
   );
 }
 
