@@ -3,10 +3,8 @@ import { ScrollView, View, StyleSheet } from 'react-native';
 import { Card, Title, Paragraph, useTheme } from 'react-native-paper';
 import { Gift, Clock, Award, PieChart, Truck } from 'lucide-react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { red100 } from 'react-native-paper/lib/typescript/styles/themes/v2/colors';
 
 function HomeScreen({ navigation }) {
-  const theme = useTheme();
   const [userName, setUserName] = useState('');
 
   useEffect(() => {

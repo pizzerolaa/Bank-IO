@@ -6,8 +6,6 @@ import { Award, Share2, TrendingUp, Gift } from 'lucide-react-native';
 import { Share } from "react-native";
 
 function SeeRewards({ navigation }) {
-    const theme = useTheme();
-
     const rewardsData = {
         donorName: "Juan Pérez",
         donorLevel: "Donante Platino",

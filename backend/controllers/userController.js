@@ -1,6 +1,5 @@
 const User = require('../models/userModel');
 const bcrypt = require('bcryptjs');
-const dotenv = require('dotenv');
 const mailjet = require('node-mailjet')
     .apiConnect(process.env.MJ_APIKEY_PUBLIC, process.env.MJ_APIKEY_PRIVATE);
 const crypto = require('crypto');

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { ScrollView, View, StyleSheet, Alert } from 'react-native';
-import { TextInput, Button, RadioButton, Switch, Text, HelperText, Card, Title, Paragraph, useTheme } from 'react-native-paper';
+import { TextInput, Button, RadioButton, Switch, Text, Card, Title, Paragraph, useTheme } from 'react-native-paper';
 import { Calendar, Clock, MapPin, MessageSquare, AlertTriangle } from 'lucide-react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -46,10 +46,10 @@ function NewDonationForm({ navigation }) {
   };
 
   // Función para reproducir sonido
-  // const playSound = async () => {
-  //   const { sound } = await Audio.Sound.createAsync(require('./sounds/pop.mp3 '));  
-  //   await sound.playAsync();
-  // };
+  const playSound = async () => {
+     const { sound } = await Audio.Sound.createAsync(require('./sounds/pop.mp3'));  
+     await sound.playAsync();
+  };
 
   const handleSubmit = async () => {
     const donationData = {
@@ -81,7 +81,7 @@ function NewDonationForm({ navigation }) {
 
       if (response.ok) {
         console.log('Donación enviada exitosamente', data);
-        //await playSound(); // Reproducir sonido al enviar
+        await playSound(); // Reproducir sonido al enviar
         navigation.navigate('DonationConfirmation');
       } else {
         console.error('Error en la respuesta:', data);

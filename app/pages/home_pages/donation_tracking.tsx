@@ -1,7 +1,7 @@
 import React from "react";
 import { View, ScrollView, StyleSheet } from "react-native";
 import { Card, Title, Paragraph, useTheme, Avatar, List, Button } from "react-native-paper";
-import { Calendar, Truck, Package, Users, Bell, Scroll } from "lucide-react-native";
+import { Calendar, Truck, Package, Users, Bell } from "lucide-react-native";
 
 const steps = [
     { title: 'Recolección programada', icon: Calendar, date: '04/01/2021' },

@@ -6,8 +6,6 @@ import { PieChart } from 'react-native-svg-charts';
 
 
 function DonationImpact({ navigation }) {
-    const theme = useTheme();
-
     const impactData = {
         totalBeneficiaries: 1250,
         communitiesReached: 5,
