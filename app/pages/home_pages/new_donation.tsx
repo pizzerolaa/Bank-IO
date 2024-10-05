@@ -7,6 +7,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Audio } from 'expo-av';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+//import popSound from '../../assets/sounds/pop.mp3';
 
 function NewDonationForm({ navigation }) {
   const theme = useTheme();
@@ -49,7 +50,7 @@ function NewDonationForm({ navigation }) {
 
   // Función para reproducir sonido
   const playSound = async () => {
-     const { sound } = await Audio.Sound.createAsync(require('./sounds/pop.mp3'));  
+     const { sound } = await Audio.Sound.createAsync(require('../../assets/sounds/pop.pm3'));  
      await sound.playAsync();
   };
 

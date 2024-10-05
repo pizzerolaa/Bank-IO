@@ -1,7 +1,7 @@
 import React from "react";
 import { ScrollView, View, StyleSheet } from 'react-native';
 import { Image } from 'expo-image'
-import { Card, Title, Paragraph, Button, ProgressBar, useTheme, List } from 'react-native-paper';
+import { Card, Title, Paragraph, Button, ProgressBar, List } from 'react-native-paper';
 import { Award, Share2, TrendingUp, Gift } from 'lucide-react-native';
 import { Share } from "react-native";
 

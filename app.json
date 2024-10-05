@@ -9,6 +9,12 @@
       "expo-router"
     ],
     "name": "Bank-IO",
-    "slug": "Bank-IO"
+    "slug": "bank-io",
+    "extra": {
+      "eas": {
+        "projectId": "9e8115b0-05a9-407b-8857-bb34d0389a90"
+      }
+    },
+    "owner": "pyfher"
   }
 }
