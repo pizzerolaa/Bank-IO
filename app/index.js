@@ -10,6 +10,7 @@ import SeeRewards from './pages/home_pages/see_Rewards';
 import DonationTracking from './pages/home_pages/donation_tracking';
 import DonationImpact from './pages/home_pages/donation_impact';
 import VerifyScreen from './pages/codeSuccess';
+import 'react-native-get-random-values';
 
 const Stack = createNativeStackNavigator();
 

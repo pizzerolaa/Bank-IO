@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { ScrollView, View, StyleSheet, Alert } from 'react-native';
+import { View, StyleSheet, Alert } from 'react-native';
 import { TextInput, Button, RadioButton, Switch, Text, Card, Title, Paragraph, useTheme } from 'react-native-paper';
 import { Calendar, Clock, MapPin, MessageSquare, AlertTriangle } from 'lucide-react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Audio } from 'expo-av';
+import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 function NewDonationForm({ navigation }) {
   const theme = useTheme();
@@ -52,6 +54,11 @@ function NewDonationForm({ navigation }) {
   };
 
   const handleSubmit = async () => {
+    if (!quantity) {
+      Alert.alert('Error', 'Por favor, completa todos los campos requeridos.');
+      return;
+    }
+    
     const donationData = {
       donor: userId, // ID del donante
       type: foodType,
@@ -98,7 +105,10 @@ function NewDonationForm({ navigation }) {
   const color = '#e02e2e';
 
   return (
-    <ScrollView style={styles.container}>
+    <KeyboardAwareScrollView 
+      style={styles.container}
+      keyboardShouldPersistTaps='handled'
+    >
       <Title style={styles.title}>Nueva Donación</Title>
 
       <Card style={styles.card}>
@@ -107,7 +117,7 @@ function NewDonationForm({ navigation }) {
           <Paragraph>Por favor, completa los siguientes campos para realizar tu donación.</Paragraph>
         </Card.Content>
       </Card>
-      
+
       <Card style={styles.card}>
         <Card.Content>
           <Title>Datos del Alimento</Title>
@@ -167,17 +177,39 @@ function NewDonationForm({ navigation }) {
         </Card>
       )}
 
-      <Card style={styles.card}>
+<Card style={styles.card}>
         <Card.Content>
           <Title>Ubicación de la Donación</Title>
-          <TextInput
-            left={<TextInput.Icon icon={() => <MapPin color={'#e02e2e'} />} />}
-            value={location}
-            onChangeText={setLocation}
-            placeholder="Dirección para recoger los alimentos"
-            placeholderTextColor={'#887878'}
-            style={{ backgroundColor: 'white' }}
-            activeUnderlineColor='#FFC300'
+          <GooglePlacesAutocomplete
+            placeholder='Dirección para recoger los alimentos'
+            onPress={(data, details = null) => {
+              setLocation(data.description);
+              console.log('Detalles de la ubicación:', details);
+            }}
+            query={{
+              key: "API KEY HERE",
+              language: 'es',
+            }}
+            styles={{
+              container: {
+                flex: 0,
+              },
+              textInputContainer: {
+                backgroundColor: 'white',
+                borderTopWidth: 0,
+                borderBottomWidth: 0,
+              },
+              textInput: {
+                height: 40,
+                color: '#5d5d5d',
+                fontSize: 16,
+              },
+              predefinedPlacesDescription: {
+                color: '#1faadb',
+              },
+            }}
+            renderLeftButton={() => <MapPin color={'#e02e2e'} />}
+            enablePoweredByContainer={false}
           />
         </Card.Content>
       </Card>
@@ -247,7 +279,7 @@ function NewDonationForm({ navigation }) {
       <View style={styles.userIdContainer}>
         <Text>User ID: {userId ? String(userId) : 'No ID available'}</Text>
       </View>
-    </ScrollView>
+    </KeyboardAwareScrollView>
   );
 }
 
