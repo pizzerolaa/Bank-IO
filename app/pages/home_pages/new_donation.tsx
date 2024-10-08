@@ -188,7 +188,7 @@ function NewDonationForm({ navigation }) {
               console.log('Detalles de la ubicación:', details);
             }}
             query={{
-              key: "AIzaSyD1IKEZtQutC4jooDTMAfKx0n5ONKpEpsw",
+              key: "Mi API",
               language: 'es',
             }}
             styles={{
