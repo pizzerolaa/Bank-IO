@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { ScrollView, View, StyleSheet } from 'react-native';
-import { Card, Title, Paragraph, useTheme } from 'react-native-paper';
+import { Card, Title, Paragraph } from 'react-native-paper';
 import { Gift, Clock, Award, PieChart, Truck } from 'lucide-react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -15,7 +15,7 @@ function HomeScreen({ navigation }) {
     try {
       const id = await AsyncStorage.getItem('userId');
       if (id) {
-        const response = await fetch(`http://192.168.100.161:5000/api/users/user/${id}`); // Cambia esta línea
+        const response = await fetch(`http://10.43.57.90:5000/api/users/user/${id}`); // Cambia esta línea
         const userData = await response.json();
         setUserName(userData.name); // Asegúrate de que 'name' sea la propiedad correcta
       }

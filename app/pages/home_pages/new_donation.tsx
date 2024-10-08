@@ -4,7 +4,7 @@ import { TextInput, Button, RadioButton, Switch, Text, Card, Title, Paragraph, u
 import { Calendar, Clock, MapPin, MessageSquare, AlertTriangle } from 'lucide-react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { Audio } from 'expo-av';
+//import { Audio } from 'expo-av';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 //import popSound from '../../assets/sounds/pop.mp3';
@@ -49,10 +49,10 @@ function NewDonationForm({ navigation }) {
   };
 
   // Función para reproducir sonido
-  const playSound = async () => {
-     const { sound } = await Audio.Sound.createAsync(require('../../assets/sounds/pop.pm3'));  
-     await sound.playAsync();
-  };
+  // const playSound = async () => {
+  //    const { sound } = await Audio.Sound.createAsync(require('../../assets/sounds/pop.pm3'));  
+  //    await sound.playAsync();
+  // };
 
   const handleSubmit = async () => {
     if (!quantity) {
@@ -77,7 +77,7 @@ function NewDonationForm({ navigation }) {
     setLoading(true);
 
     try {
-      const response = await fetch('http://192.168.100.161:5000/api/donations/post', {
+      const response = await fetch('http://10.43.57.90:5000/api/donations/post', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -89,8 +89,8 @@ function NewDonationForm({ navigation }) {
 
       if (response.ok) {
         console.log('Donación enviada exitosamente', data);
-        await playSound(); // Reproducir sonido al enviar
-        navigation.navigate('DonationConfirmation');
+        //await playSound(); // Reproducir sonido al enviar
+        navigation.navigate('DonationConfirmation', {donationId: data.id});
       } else {
         console.error('Error en la respuesta:', data);
         Alert.alert('Error', data.message || 'Error al enviar la donación');
@@ -188,7 +188,7 @@ function NewDonationForm({ navigation }) {
               console.log('Detalles de la ubicación:', details);
             }}
             query={{
-              key: "API KEY HERE",
+              key: "AIzaSyD1IKEZtQutC4jooDTMAfKx0n5ONKpEpsw",
               language: 'es',
             }}
             styles={{

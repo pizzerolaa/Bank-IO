@@ -14,7 +14,7 @@ const createDonation = async (req, res) => {
         const donation = new Donation({ donor, type, quantity, unit, expirationDate, location, availableTimes, comments, urgent });
         await donation.save();
 
-        res.status(201).json(donation);
+        res.status(201).json({donationId: donation._id});
     } catch (error) {
         console.error(error); // Agregar log para ver el error
         res.status(500).json({ message: error.message });
@@ -100,4 +100,16 @@ const getDonationsByDonor = async (req, res) => {
     }
 };
 
-module.exports = { createDonation, getDonations, getDonationById, updateDonation, deleteDonation, getDonationsByDonor };
+const qrDonation = async (req, res) => {
+    try {
+        const donation = await Donation.findById(req.params.id).populate('donor');
+        if (!donation) {
+            return res.status(404).json({ message: 'Donación no encontrada' });
+        }
+        res.json(donation);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
+module.exports = { createDonation, getDonations, getDonationById, updateDonation, deleteDonation, getDonationsByDonor, qrDonation };

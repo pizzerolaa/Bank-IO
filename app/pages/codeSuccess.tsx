@@ -16,7 +16,7 @@ const VerifyScreen = ({ route, navigation }) => {
     
         setIsSubmitting(true);  // Desactivar botón mientras se envía la solicitud
         try {
-            const response = await fetch('http://192.168.100.161:5000/api/users/verify', {
+            const response = await fetch('http://10.43.57.90:5000/api/users/verify', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

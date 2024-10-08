@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, TextInput, Text, TouchableOpacity, StyleSheet, Alert, ScrollView, KeyboardAvoidingView, Platform } from 'react-native';
+import { View, TextInput, Text, TouchableOpacity, StyleSheet, Alert, KeyboardAvoidingView } from 'react-native';
 import { Image } from 'expo-image';
 import { Mail, Lock, User, FileText, UserCircle } from 'lucide-react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -38,7 +38,7 @@ function LoginScreen({ navigation }) {
     }
     if (isLogin) {
       try {
-        const response = await fetch('http://192.168.100.161:5000/api/users/login', {
+        const response = await fetch('http://10.43.57.90:5000/api/users/login', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -62,7 +62,7 @@ function LoginScreen({ navigation }) {
       }
     } else {
       try {
-        const response = await fetch('http://192.168.100.161:5000/api/users/register', {
+        const response = await fetch('http://10.43.57.90:5000/api/users/register', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
