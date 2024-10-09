@@ -1,39 +1,42 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
-const donationSchema = new mongoose.Schema({
-    donor: { 
-        type: mongoose.Schema.Types.ObjectId, 
-        ref: 'User', 
-        required: true 
+const donationSchema = new mongoose.Schema(
+  {
+    donor: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
     },
-    type: { 
-        type: String, 
-        required: true 
+    type: {
+      type: String,
+      required: true,
     },
-    quantity: { 
-        type: Number, 
-        required: true 
+    quantity: {
+      type: Number,
+      required: true,
     },
-    unit: { 
-        type: String, 
-        required: true 
+    unit: {
+      type: String,
+      required: true,
     },
-    expirationDate: { 
-        type: Date 
+    expirationDate: {
+      type: Date,
     },
-    location: { 
-        type: String 
+    location: {
+      type: String,
     },
-    availableTimes: { 
-        type: String 
+    availableTimes: {
+      type: String,
     },
-    comments: { 
-        type: String 
+    comments: {
+      type: String,
     },
-    urgent: { 
-        type: Boolean, 
-        default: false 
+    urgent: {
+      type: Boolean,
+      default: false,
     },
-}, { timestamps: true });
+  },
+  { timestamps: true }
+);
 
-module.exports = mongoose.model('Donation', donationSchema);
+module.exports = mongoose.model("Donation", donationSchema);
