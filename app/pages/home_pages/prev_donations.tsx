@@ -30,7 +30,7 @@ function PrevDonations({ navigation }) {
   const fetchDonations = async (userId) => {
     try {
       const response = await fetch(
-        `http://10.43.57.90:5000/api/donations/getByDonor/${userId}`
+        `http://10.43.57.90:5001/api/donations/getByDonor/${userId}`
       );
       const data = await response.json();
 

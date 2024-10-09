@@ -16,10 +16,10 @@ function HomeScreen({ navigation }) {
       const id = await AsyncStorage.getItem("userId");
       if (id) {
         const response = await fetch(
-          `http://10.43.57.90:5000/api/users/user/${id}`
+          `http://10.43.57.90:5001/api/users/user/${id}`
         ); // Cambia esta línea
         const userData = await response.json();
-        setUserName(userData.name); // Asegúrate de que 'name' sea la propiedad correcta
+        setUserName(userData.name);
       }
     } catch (error) {
       console.error("Error retrieving user name:", error);
@@ -56,7 +56,7 @@ function HomeScreen({ navigation }) {
       icon: Truck,
       description: "Ve el progreso de tu donación",
       route: "DonationTracking",
-    },
+    }
   ];
 
   return (

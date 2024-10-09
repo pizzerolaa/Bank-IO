@@ -11,6 +11,7 @@ import {
 import { Image } from "expo-image";
 import { Mail, Lock, User, FileText, UserCircle } from "lucide-react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { Button } from "react-native-paper";
 
 function LoginScreen({ navigation }) {
   const [isLogin, setIsLogin] = useState(true);
@@ -55,7 +56,7 @@ function LoginScreen({ navigation }) {
     if (isLogin) {
       try {
         const response = await fetch(
-          "http://10.43.57.90:5000/api/users/login",
+          "http://10.43.57.90:5001/api/users/login",
           {
             method: "POST",
             headers: {
@@ -85,7 +86,7 @@ function LoginScreen({ navigation }) {
     } else {
       try {
         const response = await fetch(
-          "http://10.43.57.90:5000/api/users/register",
+          "http://10.43.57.90:5001/api/users/register",
           {
             method: "POST",
             headers: {
@@ -237,6 +238,18 @@ function LoginScreen({ navigation }) {
             </Text>
           </TouchableOpacity>
         )}
+
+        <TouchableOpacity
+          onPress={() => navigation.navigate("QrCodeScan")}
+          style={styles.forgotPassword}
+        >
+          <Button>
+            <Text style={styles.recolectorText}>
+              ¿Eres recolector? Haz click aquí
+            </Text>
+          </Button>
+        </TouchableOpacity>
+
       </View>
     </KeyboardAvoidingView>
   );
@@ -311,6 +324,10 @@ const styles = StyleSheet.create({
     height: 250,
     marginBottom: 20,
   },
+  recolectorText: {
+    color: "black",
+    fontSize: 14,
+  }
 });
 
 export default LoginScreen;

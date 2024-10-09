@@ -1,4 +1,5 @@
 const Donation = require("../models/donationModel");
+const mongoose = require('mongoose');
 
 // Crear nueva donación
 const createDonation = async (req, res) => {
@@ -134,10 +135,19 @@ const getDonationsByDonor = async (req, res) => {
 
 const qrDonation = async (req, res) => {
   try {
-    const donation = await Donation.findById(req.params.id).populate("donor");
+    const { id } = req.params;
+
+    // Verifica si el ID es válido
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(400).json({ message: "ID de donación no válido" });
+    }
+
+    const donation = await Donation.findById(id).populate("donor");
+
     if (!donation) {
       return res.status(404).json({ message: "Donación no encontrada" });
     }
+
     res.json(donation);
   } catch (error) {
     res.status(500).json({ message: error.message });

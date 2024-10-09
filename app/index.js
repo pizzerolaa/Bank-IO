@@ -10,6 +10,8 @@ import SeeRewards from "./pages/home_pages/see_Rewards";
 import DonationTracking from "./pages/home_pages/donation_tracking";
 import DonationImpact from "./pages/home_pages/donation_impact";
 import VerifyScreen from "./pages/codeSuccess";
+import QrCodeScan from "./pages/home_pages/qrScanner";
+import DonationDetails from './pages/home_pages/donation_detail';
 import "react-native-get-random-values";
 
 const Stack = createNativeStackNavigator();
@@ -61,6 +63,16 @@ function App() {
         <Stack.Screen
           name="Verify"
           component={VerifyScreen}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="QrCodeScan" 
+          component={QrCodeScan}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="DonationDetails"
+          component={DonationDetails}
           options={{ headerShown: false }}
         />
       </Stack.Navigator>

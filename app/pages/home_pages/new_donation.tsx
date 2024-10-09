@@ -99,7 +99,7 @@ function NewDonationForm({ navigation }) {
 
     try {
       const response = await fetch(
-        "http://10.43.57.90:5000/api/donations/post",
+        "http://10.43.57.90:5001/api/donations/post",
         {
           method: "POST",
           headers: {
@@ -113,8 +113,8 @@ function NewDonationForm({ navigation }) {
 
       if (response.ok) {
         console.log("Donación enviada exitosamente", data);
-        //await playSound(); // Reproducir sonido al enviar
-        navigation.navigate("DonationConfirmation", { donationId: data.id });
+        console.log("ID de la donación:", data.donationId);
+        navigation.navigate("DonationConfirmation", { id: data.donationId });
       } else {
         console.error("Error en la respuesta:", data);
         Alert.alert("Error", data.message || "Error al enviar la donación");
@@ -232,7 +232,7 @@ function NewDonationForm({ navigation }) {
               console.log("Detalles de la ubicación:", details);
             }}
             query={{
-              key: "Mi API",
+              key: "AIzaSyD1IKEZtQutC4jooDTMAfKx0n5ONKpEpsw",
               language: "es",
             }}
             styles={{

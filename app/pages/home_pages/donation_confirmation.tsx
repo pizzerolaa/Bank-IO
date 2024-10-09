@@ -6,12 +6,16 @@ import QRCode from "react-native-qrcode-svg";
 import logoBanco from "../../assets/images/bancoqr.jpg";
 import { useRoute } from "@react-navigation/native";
 
+type DonationConfParams = {
+  id: string;
+};
+
 function DonationConf({ navigation }) {
   const route = useRoute();
-  const donationId = route.params;
+  const donationId = (route.params as DonationConfParams).id;
 
   const renderQR = () => {
-    const qrValue = `http://10.43.57.90:5000/api/donations/${donationId}`;
+    const qrValue = donationId;
     return (
       <QRCode
         value={qrValue}
