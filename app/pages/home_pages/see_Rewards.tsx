@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { View, Text, StyleSheet, ScrollView, Alert } from "react-native";
-import { Button, Card, ProgressBar, Avatar } from "react-native-paper";
+import { Button, Card, ProgressBar } from "react-native-paper";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Gift, LineChart, Trophy } from "lucide-react-native";
 
