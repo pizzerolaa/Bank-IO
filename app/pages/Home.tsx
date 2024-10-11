@@ -62,9 +62,7 @@ function HomeScreen({ navigation }) {
   return (
     <ScrollView style={styles.container}>
       <Title style={styles.title}>
-        {"\n"}
-        {userName ? `Bienvenido ${userName}` : "Bienvenido!"}
-        {"\n"}
+        {userName ? `¡Bienvenido ${userName}!` : "!Bienvenido!"}
       </Title>
       <View style={styles.grid}>
         {homeItems.map((item, index) => (
@@ -101,7 +99,7 @@ const styles = StyleSheet.create({
     marginBottom: 16,
     textAlign: "center",
     paddingBottom: 20,
-    color: "red",
+    color: "#e02e2e",
   },
   grid: {
     flexDirection: "row",

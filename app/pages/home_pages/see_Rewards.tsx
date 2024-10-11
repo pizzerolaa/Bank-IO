@@ -1,191 +1,170 @@
-import React from "react";
-import { ScrollView, View, StyleSheet } from "react-native";
-import { Image } from "expo-image";
-import {
-  Card,
-  Title,
-  Paragraph,
-  Button,
-  ProgressBar,
-  List,
-} from "react-native-paper";
-import { Award, Share2, TrendingUp, Gift } from "lucide-react-native";
-import { Share } from "react-native";
+import React, { useEffect, useState } from "react";
+import { View, Text, StyleSheet, ScrollView, Alert } from "react-native";
+import { Button, Card, ProgressBar, Avatar } from "react-native-paper";
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Gift, LineChart, Trophy } from "lucide-react-native";
 
 function SeeRewards({ navigation }) {
-  const rewardsData = {
-    donorName: "Juan Pérez",
-    donorLevel: "Donante Platino",
-    totalDonations: 1500, // in kg
-    certificateUrl: "https://example.com/certificate.pdf",
-    nextLevelProgress: 0.75,
-    nextLevelName: "Donante Diamante",
-    achievements: [
-      {
-        name: "Primera Donación",
-        description: "Realizaste tu primera donación",
-        icon: Gift,
-      },
-      {
-        name: "Donante Frecuente",
-        description: "Has donado por 3 meses consecutivos",
-        icon: TrendingUp,
-      },
-      {
-        name: "Impacto Comunitario",
-        description: "Tus donaciones han beneficiado a 5 comunidades",
-        icon: Award,
-      },
-    ],
-  };
+    const [donations, setDonations] = useState([]);
+    const [totalQuantity, setTotalQuantity] = useState(0);
+    const [rank, setRank] = useState("");
+    const [progress, setProgress] = useState(0);
+    const [nextRank, setNextRank] = useState("");
+    const [nextGoal, setNextGoal] = useState(0);
 
-  const shareCertificate = async () => {
-    try {
-      await Share.share({
-        title: "Certificado de Donación",
-        message: `¡He alcanzado el nivel de ${rewardsData.donorLevel} en mis donaciones al Banco de Alimentos!`,
-        url: rewardsData.certificateUrl,
-      });
-    } catch (error) {
-      console.error("Errror al compartir", error);
-    }
-  };
+    useEffect(() => {
+        const fetchDonations = async () => {
+            try {
+                const id = await AsyncStorage.getItem("userId");
+                const response = await fetch(`http://10.43.57.90:5001/api/donations/getByDonor/${id}`);
+                const data = await response.json();
 
-  const themeColor = "#e02e2e";
+                if (response.ok) {
+                    setDonations(data);
+                    calculateTotal(data);
+                } else {
+                    Alert.alert('Error', data.message || 'Error al cargar las donaciones');
+                }
+            } catch (error) {
+                console.error('Error en la solicitud:', error);
+                Alert.alert('Error', 'Error en la solicitud de donaciones.');
+            }
+        };
 
-  return (
-    <ScrollView style={styles.container}>
-      <Title style={styles.title}>Tus Recompensas y Reconocimientos</Title>
+        fetchDonations();
+    }, []);
 
-      {/* Card para nivel actual y donaciones totales */}
-      <Card style={styles.card}>
-        <Card.Content>
-          <Title>{rewardsData.donorName}</Title>
-          <Paragraph>{rewardsData.donorLevel}</Paragraph>
-          <View style={styles.certificateContainer}>
-            <Image
-              source="https://picsum.photos/seed/picsum/400/300"
-              style={styles.certificateImage}
-            />
-          </View>
-          <Button
-            mode="outlined"
-            icon={() => <Share2 color={themeColor} />}
-            style={styles.shareButton}
-            onPress={shareCertificate}
-          >
-            Compartir Certificado
-          </Button>
-        </Card.Content>
-      </Card>
+    const calculateTotal = (donations) => {
+        const total = donations.reduce((sum, donation) => sum + donation.quantity, 0);
+        setTotalQuantity(total);
+        const rankData = determineRank(total);
+        setRank(rankData.currentRank);
+        setNextRank(rankData.nextRank);
+        setNextGoal(rankData.nextGoal);
+        setProgress(rankData.progress);
+    };
 
-      {/* Card para progreso al siguiente nivel */}
-      <Card style={styles.card}>
-        <Card.Content>
-          <Title>Progreso hacia {rewardsData.nextLevelName}</Title>
-          <ProgressBar
-            progress={rewardsData.nextLevelProgress}
-            color={themeColor}
-            style={styles.progressBar}
-          />
-          <Paragraph>
-            {`${Math.round(rewardsData.nextLevelProgress * 100)}% completado`}
-          </Paragraph>
-        </Card.Content>
-      </Card>
+    const determineRank = (total) => {
+        if (total >= 10000) return { currentRank: "Gran Benefactor", nextRank: "Meta Alcanzada", nextGoal: 10000, progress: 1 }; // 10 toneladas, nivel máximo alcanzado
+        if (total >= 5000) return { currentRank: "Embajador de Esperanza", nextRank: "Gran Benefactor", nextGoal: 10000, progress: (total - 5000) / (10000 - 5000) };
+        if (total >= 1000) return { currentRank: "Héroe de la Comunidad", nextRank: "Embajador de Esperanza", nextGoal: 5000, progress: (total - 1000) / (5000 - 1000) };
+        if (total >= 500) return { currentRank: "Colaborador Generoso", nextRank: "Héroe de la Comunidad", nextGoal: 1000, progress: (total - 500) / (1000 - 500) };
+        if (total >= 100) return { currentRank: "Aliado Comprometido", nextRank: "Colaborador Generoso", nextGoal: 500, progress: (total - 100) / (500 - 100) };
+        if (total >= 20) return { currentRank: "Iniciador Solidario", nextRank: "Aliado Comprometido", nextGoal: 100, progress: (total - 20) / (100 - 20) };
+        return { currentRank: "No hay rango asignado", nextRank: "Iniciador Solidario", nextGoal: 20, progress: total / 20 };
+    };
 
-      {/* Card para logros */}
-      <Card style={styles.card}>
-        <Card.Content>
-          <Title>Tus Logros</Title>
-          <List.Section>
-            {rewardsData.achievements.map((achievement, index) => (
-              <List.Item
-                key={index}
-                title={achievement.name}
-                description={achievement.description}
-                left={() => <achievement.icon color={themeColor} size={24} />}
-              />
-            ))}
-          </List.Section>
-        </Card.Content>
-      </Card>
+    const achievements = [
+        { title: "Primera Donación", description: "Realizaste tu primera donación.", icon: Gift },
+        { title: "Donante Frecuente", description: "Has donado por 3 meses consecutivos.", icon: LineChart },
+        { title: "Impacto Comunitario", description: "Tus donaciones han beneficiado a 5 comunidades.", icon: Trophy },
+        // Puedes añadir más logros según sea necesario
+    ];
 
-      {/*Card estadisticas de donación*/}
-      <Card style={styles.card}>
-        <Card.Content>
-          <Title>Estadísticas de Donación</Title>
-          <Paragraph>
-            Total de alimentos donados: {rewardsData.totalDonations} kg
-          </Paragraph>
-          <Paragraph>Nivel actual: {rewardsData.donorLevel}</Paragraph>
-          <Paragraph>Siguiente nivel: {rewardsData.nextLevelName}</Paragraph>
-        </Card.Content>
-      </Card>
+    return (
+        <ScrollView contentContainerStyle={styles.container}>
+            <Text style={{ fontSize: 24, marginBottom: 20 }}>Tus Recompensas</Text>
+            <Card style={styles.card}>
+                <Card.Title title="Nivel Actual y Donaciones Totales" />
+                <Card.Content>
+                    <Text style={styles.cardText}>Nivel del Donante: {rank}</Text>
+                    <Text style={styles.cardText}>Cantidad de Donaciones: {totalQuantity} kg</Text>
+                </Card.Content>
+            </Card>
 
-      {/*Card impacto en responsabilidad social*/}
-      <Card style={styles.card}>
-        <Card.Content>
-          <Title>Impacto en Responsabilidad Social</Title>
-          <Paragraph>
-            Tus donaciones no solo ayudan a combatir la inseguridad alimentaria,
-            sino que también demuestran tu compromiso con la responsabilidad
-            social. Puedes utilizar este certificado y tus logros en reportes
-            corporativos para mostrar el impacto positivo de tu organización en
-            la comunidad.
-          </Paragraph>
-        </Card.Content>
-      </Card>
+            <Card style={styles.card}>
+                <Card.Title title="Progreso hacia el Siguiente Nivel" />
+                <Card.Content>
+                    <Text style={styles.cardText}>Próximo Nivel: {nextRank}</Text>
+                    <ProgressBar progress={progress} color="#e02e2e" style={styles.progressBar} />
+                    <Text style={styles.cardText}>Progreso: {(progress * 100).toFixed(2)}% (Objetivo: {nextGoal} kg)</Text>
+                </Card.Content>
+            </Card>
 
-      <Button
-        mode="contained"
-        style={styles.button}
-        onPress={() => navigation.navigate("Home")}
-      >
-        Volver al Inicio
-      </Button>
-    </ScrollView>
-  );
+            <Card style={styles.card}>
+                <Card.Title title="Tus Logros" />
+                <Card.Content>
+                    {achievements.map((achievement, index) => (
+                        <View key={index} style={styles.achievementContainer}>
+                            <achievement.icon size={36} style={styles.icon} />
+                            <View>
+                                <Text style={styles.achievementTitle}>{achievement.title}</Text>
+                                <Text style={styles.achievementDescription}>{achievement.description}</Text>
+                            </View>
+                        </View>
+                    ))}
+                </Card.Content>
+            </Card>
+
+            {/* Nueva Card de Impacto en Responsabilidad Social */}
+            <Card style={styles.card}>
+                <Card.Title title="Impacto en Responsabilidad Social" />
+                <Card.Content>
+                    <Text style={styles.cardText}>
+                        Tus donaciones están marcando una diferencia real en las comunidades. Cada kilogramo de comida donado ha ayudado a mejorar la vida de muchas personas.
+                    </Text>
+                    <Text style={styles.cardText}>
+                        Puedes usar tus logros alcanzados en reportes de responsabilidad social corporativa (RSC) para demostrar tu compromiso con la comunidad y la sostenibilidad. 
+                        Estos logros pueden fortalecer tus reportes y mostrar el impacto positivo que has tenido, alineándote con los Objetivos de Desarrollo Sostenible (ODS).
+                    </Text>
+                </Card.Content>
+            </Card>
+
+            <Button 
+                mode="contained" 
+                onPress={() => navigation.goBack()} 
+                style={styles.button}
+            >
+                Volver
+            </Button>
+        </ScrollView>
+    );
 }
 
-export default SeeRewards;
-
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 16,
-    backgroundColor: "white",
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: "bold",
-    marginBottom: 16,
-    textAlign: "center",
-  },
-  card: {
-    marginBottom: 16,
-  },
-  certificateContainer: {
-    alignItems: "center",
-    marginVertical: 16,
-  },
-  certificateImage: {
-    width: 200,
-    height: 150,
-    resizeMode: "contain",
-  },
-  shareButton: {
-    marginTop: 8,
-  },
-  progressBar: {
-    height: 10,
-    borderRadius: 5,
-    marginVertical: 8,
-  },
-  button: {
-    marginTop: 20,
-    backgroundColor: "#e02e2e",
-    borderRadius: 30,
-    elevation: 3,
-  },
+    container: {
+        flexGrow: 1,
+        justifyContent: "center",
+        alignItems: "center",
+        backgroundColor: "white",
+        padding: 20,
+    },
+    card: {
+        width: "90%",
+        marginBottom: 20,
+        backgroundColor: "white",
+    },
+    cardText: {
+        fontSize: 18,
+        marginBottom: 10,
+        textAlign: "auto",
+    },
+    progressBar: {
+        height: 10,
+        borderRadius: 5,
+        marginVertical: 10,
+    },
+    achievementContainer: {
+        flexDirection: "row",
+        alignItems: "center",
+        marginVertical: 10,
+    },
+    achievementTitle: {
+        fontSize: 16,
+        fontWeight: "bold",
+    },
+    achievementDescription: {
+        fontSize: 14,
+        color: "#555",
+    },
+    icon: {
+        marginRight: 15,
+        color: "#e02e2e",
+    },
+    button: {
+        marginTop: 20,
+        backgroundColor: "#e02e2e",
+    },
 });
+
+export default SeeRewards;
