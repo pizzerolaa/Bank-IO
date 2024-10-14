@@ -5,6 +5,7 @@ import {
   Title,
   Paragraph,
   DataTable,
+  Button,
 } from "react-native-paper";
 import { Users, MapPin, TrendingUp } from "lucide-react-native";
 import { PieChart } from "react-native-svg-charts";
@@ -128,6 +129,14 @@ function DonationImpact({ navigation }) {
           </Paragraph>
         </Card.Content>
       </Card>
+
+      <Button
+        style={styles.buttonBack}
+        mode="contained"
+        onPress={() => navigation.navigate("Home")}
+      >
+        Volver al Inicio
+      </Button>
     </ScrollView>
   );
 }
@@ -186,4 +195,9 @@ const styles = StyleSheet.create({
     marginRight: 4,
   },
   legendText: {},
+  buttonBack: {
+    marginTop: 10,
+    marginBottom: 25,
+    backgroundColor: "#e02e2e",
+  },
 });

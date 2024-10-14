@@ -72,9 +72,9 @@ const DonationDetails = ({ route }) => {
                 </Card.Content>
             </Card>
             <TouchableOpacity style={styles.button} onPress={() => navigation.goBack()}>
-            <Ionicons name="arrow-back" size={24} color="white" />
-            <Text style={styles.buttonText}>Regresar</Text>
-          </TouchableOpacity>
+                <Ionicons name="arrow-back" size={24} color="white" />
+                <Text style={styles.buttonText}>Regresar</Text>
+            </TouchableOpacity>
         </View>
     );
 };
