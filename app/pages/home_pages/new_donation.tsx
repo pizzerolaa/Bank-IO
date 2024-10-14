@@ -15,8 +15,8 @@ import {
   Calendar,
   Clock,
   MapPin,
-  MessageSquare,
   AlertTriangle,
+  TextIcon,
 } from "lucide-react-native";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -99,7 +99,7 @@ function NewDonationForm({ navigation }) {
 
     try {
       const response = await fetch(
-        "http://10.43.57.90:5001/api/donations/post",
+        "http://192.168.100.161:5001/api/donations/post",
         {
           method: "POST",
           headers: {
@@ -147,6 +147,24 @@ function NewDonationForm({ navigation }) {
 
       <Card style={styles.card}>
         <Card.Content>
+          <Title>¿Qué alimento donará?</Title>
+          <TextInput
+            left={
+              <TextInput.Icon icon={() => <TextIcon color={color} />} />
+            }
+            value={comments}
+            onChangeText={setComments}
+            numberOfLines={10}
+            activeUnderlineColor="#FFC300"
+            placeholder="Detalles de donación. Ej: Arroz, frijoles, aceite, etc."
+            placeholderTextColor={"#887878"}
+            style={{ backgroundColor: "white" }}
+          />
+        </Card.Content>
+      </Card>
+
+      <Card style={styles.card}>
+        <Card.Content>
           <Title>Datos del Alimento</Title>
           <RadioButton.Group
             onValueChange={(value) => setFoodType(value)}
@@ -177,7 +195,7 @@ function NewDonationForm({ navigation }) {
               keyboardType="numeric"
               value={quantity}
               onChangeText={setQuantity}
-              placeholder="Cantidad de alimentos"
+              placeholder="Cantidad de alimentos. Ej: 10"
               placeholderTextColor={"#887878"}
               activeUnderlineColor="#FFC300"
             />
@@ -227,6 +245,7 @@ function NewDonationForm({ navigation }) {
           <Title>Ubicación de la Donación</Title>
           <GooglePlacesAutocomplete
             placeholder="Dirección para recoger los alimentos"
+            fetchDetails={true}
             onPress={(data, details = null) => {
               setLocation(data.description);
               console.log("Detalles de la ubicación:", details);
@@ -250,7 +269,7 @@ function NewDonationForm({ navigation }) {
                 fontSize: 16,
               },
               predefinedPlacesDescription: {
-                color: "#1faadb",
+                color: "black",
               },
             }}
             renderLeftButton={() => <MapPin color={"#e02e2e"} />}
@@ -270,25 +289,6 @@ function NewDonationForm({ navigation }) {
             placeholderTextColor={"#887878"}
             style={{ backgroundColor: "white" }}
             activeUnderlineColor="#FFC300"
-          />
-        </Card.Content>
-      </Card>
-
-      <Card style={styles.card}>
-        <Card.Content>
-          <Title>Comentarios Adicionales</Title>
-          <TextInput
-            left={
-              <TextInput.Icon icon={() => <MessageSquare color={color} />} />
-            }
-            value={comments}
-            onChangeText={setComments}
-            multiline
-            numberOfLines={10}
-            activeUnderlineColor="#FFC300"
-            placeholder="Información adicional"
-            placeholderTextColor={"#887878"}
-            style={{ backgroundColor: "white" }}
           />
         </Card.Content>
       </Card>
@@ -324,10 +324,7 @@ function NewDonationForm({ navigation }) {
       >
         {loading ? "Enviando..." : "Enviar Donación"}
       </Button>
-
-      <View style={styles.userIdContainer}>
-        <Text>User ID: {userId ? String(userId) : "No ID available"}</Text>
-      </View>
+      
     </KeyboardAwareScrollView>
   );
 }

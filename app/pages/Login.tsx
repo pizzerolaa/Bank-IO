@@ -12,6 +12,7 @@ import { Image } from "expo-image";
 import { Mail, Lock, User, FileText, UserCircle } from "lucide-react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Button } from "react-native-paper";
+import Logo from "../assets/images/logo-2.png";
 
 function LoginScreen({ navigation }) {
   const [isLogin, setIsLogin] = useState(true);
@@ -56,7 +57,7 @@ function LoginScreen({ navigation }) {
     if (isLogin) {
       try {
         const response = await fetch(
-          "http://10.43.57.90:5001/api/users/login",
+          "http://192.168.100.161:5001/api/users/login",
           {
             method: "POST",
             headers: {
@@ -69,6 +70,7 @@ function LoginScreen({ navigation }) {
         const data = await response.json();
 
         if (response.ok) {
+          await AsyncStorage.removeItem("userId");
           //login exitoso
           Alert.alert(
             "Login exitoso",
@@ -77,6 +79,7 @@ function LoginScreen({ navigation }) {
           console.log("Navigate to verify screen");
           navigation.navigate("Verify", { email });
           await AsyncStorage.setItem("userId", data.id);
+          
         } else {
           setErrorMessage(data.message || "Error al iniciar sesión");
         }
@@ -86,7 +89,7 @@ function LoginScreen({ navigation }) {
     } else {
       try {
         const response = await fetch(
-          "http://10.43.57.90:5001/api/users/register",
+          "http://192.168.100.161:5001/api/users/register",
           {
             method: "POST",
             headers: {
@@ -136,10 +139,8 @@ function LoginScreen({ navigation }) {
     >
       <View style={styles.container}>
         <Image
+          source={Logo}
           style={styles.logo}
-          source={{
-            uri: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQDQW8JFjLTO0yjqybmN4ruKCndVXtLzABGaQ&s",
-          }} // Cambié el source para ser un objeto con uri
           placeholder={blurhash}
           contentFit="fill"
           transition={1000}

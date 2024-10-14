@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, StyleSheet, ScrollView, Alert } from "react-native";
-import { Button, Card, ProgressBar } from "react-native-paper";
+import { View, Text, StyleSheet, Alert, Animated } from "react-native";
+import { Button, Card, ProgressBar } from "react-native-paper"; 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Gift, LineChart, Trophy } from "lucide-react-native";
 
@@ -11,12 +11,13 @@ function SeeRewards({ navigation }) {
     const [progress, setProgress] = useState(0);
     const [nextRank, setNextRank] = useState("");
     const [nextGoal, setNextGoal] = useState(0);
+    const [fadeAnim] = useState(new Animated.Value(0)); // Para animaciones suaves
 
     useEffect(() => {
         const fetchDonations = async () => {
             try {
                 const id = await AsyncStorage.getItem("userId");
-                const response = await fetch(`http://10.43.57.90:5001/api/donations/getByDonor/${id}`);
+                const response = await fetch(`http://192.168.100.161:5001/api/donations/getByDonor/${id}`);
                 const data = await response.json();
 
                 if (response.ok) {
@@ -32,6 +33,13 @@ function SeeRewards({ navigation }) {
         };
 
         fetchDonations();
+
+        // Animación de entrada suave
+        Animated.timing(fadeAnim, {
+            toValue: 1,
+            duration: 1000,
+            useNativeDriver: true,
+        }).start();
     }, []);
 
     const calculateTotal = (donations) => {
@@ -58,16 +66,16 @@ function SeeRewards({ navigation }) {
         { title: "Primera Donación", description: "Realizaste tu primera donación.", icon: Gift },
         { title: "Donante Frecuente", description: "Has donado por 3 meses consecutivos.", icon: LineChart },
         { title: "Impacto Comunitario", description: "Tus donaciones han beneficiado a 5 comunidades.", icon: Trophy },
-        // Puedes añadir más logros según sea necesario
     ];
 
     return (
-        <ScrollView contentContainerStyle={styles.container}>
-            <Text style={{ fontSize: 24, marginBottom: 20 }}>Tus Recompensas</Text>
+        <Animated.ScrollView contentContainerStyle={styles.container} style={{ opacity: fadeAnim }}>
+            <Text style={styles.title}>Tus Recompensas</Text>
+
             <Card style={styles.card}>
                 <Card.Title title="Nivel Actual y Donaciones Totales" />
                 <Card.Content>
-                    <Text style={styles.cardText}>Nivel del Donante: {rank}</Text>
+                    <Text style={styles.rank}>Nivel del Donante: {rank}</Text>
                     <Text style={styles.cardText}>Cantidad de Donaciones: {totalQuantity} kg</Text>
                 </Card.Content>
             </Card>
@@ -77,7 +85,7 @@ function SeeRewards({ navigation }) {
                 <Card.Content>
                     <Text style={styles.cardText}>Próximo Nivel: {nextRank}</Text>
                     <ProgressBar progress={progress} color="#e02e2e" style={styles.progressBar} />
-                    <Text style={styles.cardText}>Progreso: {(progress * 100).toFixed(2)}% (Objetivo: {nextGoal} kg)</Text>
+                    <Text style={styles.progressText}>Progreso: {(progress * 100).toFixed(2)}% (Objetivo: {nextGoal} kg)</Text>
                 </Card.Content>
             </Card>
 
@@ -86,7 +94,7 @@ function SeeRewards({ navigation }) {
                 <Card.Content>
                     {achievements.map((achievement, index) => (
                         <View key={index} style={styles.achievementContainer}>
-                            <achievement.icon size={36} style={styles.icon} />
+                            <achievement.icon size={40} style={styles.icon} />
                             <View>
                                 <Text style={styles.achievementTitle}>{achievement.title}</Text>
                                 <Text style={styles.achievementDescription}>{achievement.description}</Text>
@@ -96,28 +104,14 @@ function SeeRewards({ navigation }) {
                 </Card.Content>
             </Card>
 
-            {/* Nueva Card de Impacto en Responsabilidad Social */}
-            <Card style={styles.card}>
-                <Card.Title title="Impacto en Responsabilidad Social" />
-                <Card.Content>
-                    <Text style={styles.cardText}>
-                        Tus donaciones están marcando una diferencia real en las comunidades. Cada kilogramo de comida donado ha ayudado a mejorar la vida de muchas personas.
-                    </Text>
-                    <Text style={styles.cardText}>
-                        Puedes usar tus logros alcanzados en reportes de responsabilidad social corporativa (RSC) para demostrar tu compromiso con la comunidad y la sostenibilidad. 
-                        Estos logros pueden fortalecer tus reportes y mostrar el impacto positivo que has tenido, alineándote con los Objetivos de Desarrollo Sostenible (ODS).
-                    </Text>
-                </Card.Content>
-            </Card>
-
-            <Button 
-                mode="contained" 
-                onPress={() => navigation.goBack()} 
-                style={styles.button}
+            <Button
+                style={styles.buttonBack}
+                mode="contained"
+                onPress={() => navigation.navigate("Home")}
             >
-                Volver
+                Volver al Inicio
             </Button>
-        </ScrollView>
+        </Animated.ScrollView>
     );
 }
 
@@ -129,41 +123,62 @@ const styles = StyleSheet.create({
         backgroundColor: "white",
         padding: 20,
     },
+    title: {
+        fontSize: 28,
+        fontWeight: "bold",
+        color: "#e02e2e",
+        marginBottom: 20,
+    },
     card: {
         width: "90%",
         marginBottom: 20,
-        backgroundColor: "white",
+        backgroundColor: "#f9f9f9",
+        borderRadius: 10,
+        elevation: 3,
+    },
+    rank: {
+        fontSize: 20,
+        fontWeight: "bold",
+        color: "#FFC300",
+        marginBottom: 10,
     },
     cardText: {
-        fontSize: 18,
+        fontSize: 16,
         marginBottom: 10,
-        textAlign: "auto",
+        color: "#333",
     },
     progressBar: {
         height: 10,
         borderRadius: 5,
+        backgroundColor: "#e0e0e0",
         marginVertical: 10,
+    },
+    progressText: {
+        fontSize: 14,
+        color: "#888",
     },
     achievementContainer: {
         flexDirection: "row",
         alignItems: "center",
-        marginVertical: 10,
+        marginVertical: 15,
     },
     achievementTitle: {
-        fontSize: 16,
+        fontSize: 18,
         fontWeight: "bold",
+        color: "#555",
     },
     achievementDescription: {
         fontSize: 14,
-        color: "#555",
+        color: "#777",
     },
     icon: {
         marginRight: 15,
         color: "#e02e2e",
     },
-    button: {
+    buttonBack: {
         marginTop: 20,
         backgroundColor: "#e02e2e",
+        borderRadius: 20,
     },
 });
 

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { ScrollView, View, StyleSheet } from "react-native";
-import { Card, Title, Paragraph } from "react-native-paper";
-import { Gift, Clock, Award, PieChart, Truck } from "lucide-react-native";
+import { ScrollView, View, StyleSheet, Alert } from "react-native";
+import { Card, Title, Paragraph, Button } from "react-native-paper";
+import { Gift, Clock, Award, PieChart, Truck, StepBack } from "lucide-react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 function HomeScreen({ navigation }) {
@@ -16,13 +16,24 @@ function HomeScreen({ navigation }) {
       const id = await AsyncStorage.getItem("userId");
       if (id) {
         const response = await fetch(
-          `http://10.43.57.90:5001/api/users/user/${id}`
-        ); // Cambia esta línea
+          `http://192.168.100.161:5001/api/users/user/${id}`
+        );
         const userData = await response.json();
         setUserName(userData.name);
       }
     } catch (error) {
       console.error("Error retrieving user name:", error);
+    }
+  };
+
+  const handleLogout = async () => {
+    try {
+      await AsyncStorage.removeItem("userId");
+      setUserName("");
+      navigation.navigate("Login");
+      Alert.alert("Sesión cerrada", "¡Hasta luego!");
+    } catch (error) {
+      console.error("Error al cerrar sesión:", error);
     }
   };
 
@@ -42,7 +53,7 @@ function HomeScreen({ navigation }) {
     {
       title: "Ver recompensas",
       icon: Award,
-      description: "Descubre tus reconocimientos",
+      description: "Descubre tus reconocimientos y recompensas",
       route: "SeeRewards",
     },
     {
@@ -72,7 +83,7 @@ function HomeScreen({ navigation }) {
             onPress={() => navigation.navigate(item.route)}
           >
             <Card.Content style={styles.cardContent}>
-              <item.icon color={"#e02e2e"} size={40} />
+              <item.icon color={"#e02e2e"} size={35} />
               <Title style={styles.cardTitle}>{item.title}</Title>
               <Paragraph style={styles.cardDescription}>
                 {item.description}
@@ -81,6 +92,14 @@ function HomeScreen({ navigation }) {
           </Card>
         ))}
       </View>
+      <Button
+          icon={() => <StepBack color={'white'} />}
+          mode="contained"
+          onPress={() => handleLogout()}
+          style={styles.logoutButton}
+        >
+          Cerrar Sesión
+        </Button>
     </ScrollView>
   );
 }
@@ -109,8 +128,14 @@ const styles = StyleSheet.create({
   card: {
     width: "47%",
     marginBottom: 18,
-    elevation: 4,
+    borderRadius: 15,
+    elevation: 5,
     backgroundColor: "white",
+    shadowColor: "#000",
+    shadowOpacity: 0.1,
+    shadowRadius: 8,
+    shadowOffset: { width: 0, height: 4 },
+    transform: [{ scale: 1 }],
   },
   cardContent: {
     alignItems: "center",
@@ -121,10 +146,19 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     textAlign: "center",
     marginTop: 8,
+    color: "#333",
   },
   cardDescription: {
     fontSize: 12,
     textAlign: "center",
     marginTop: 4,
+    color: "#777",
+  },
+  logoutButton: {
+    marginTop: 0,
+    marginBottom: 20,
+    backgroundColor: "#e02e2e",
+    borderRadius: 8,
+    padding: 1,
   },
 });

@@ -1,20 +1,19 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, StyleSheet, ScrollView, Alert } from "react-native";
-import { Button, Title } from "react-native-paper";
+import { Text, StyleSheet, Alert, Animated } from "react-native";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import { Button, Title, Card, Paragraph } from "react-native-paper";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { Calendar, MapPin, AlertCircle, Info, Carrot } from "lucide-react-native"; // Iconos nuevos
 
 function PrevDonations({ navigation }) {
   const [donations, setDonations] = useState([]);
   const [selectedDonation, setSelectedDonation] = useState(null);
-  const [userId, setUserId] = useState(null);
 
-  // Obtener el ID del usuario
   useEffect(() => {
     const fetchUserId = async () => {
       try {
         const id = await AsyncStorage.getItem("userId");
         if (id) {
-          setUserId(id);
           fetchDonations(id);
         } else {
           Alert.alert("Error", "No se encontró el ID del usuario.");
@@ -30,10 +29,9 @@ function PrevDonations({ navigation }) {
   const fetchDonations = async (userId) => {
     try {
       const response = await fetch(
-        `http://10.43.57.90:5001/api/donations/getByDonor/${userId}`
+        `http://192.168.100.161:5001/api/donations/getByDonor/${userId}`
       );
       const data = await response.json();
-
       if (response.ok) {
         setDonations(data);
       } else {
@@ -46,68 +44,76 @@ function PrevDonations({ navigation }) {
   };
 
   const toggleDonationDetails = (index) => {
-    if (selectedDonation === index) {
-      setSelectedDonation(null);
-    } else {
-      setSelectedDonation(index);
-    }
+    setSelectedDonation(selectedDonation === index ? null : index);
   };
 
   return (
-    <ScrollView style={styles.container}>
-      <Title style={styles.title}>
-        {"\n"}Donaciones Anteriores{"\n"}
-      </Title>
+    <KeyboardAwareScrollView style={styles.container}>
+      <Title style={styles.title}>Donaciones Anteriores</Title>
       {donations.length === 0 ? (
         <Text style={styles.noDonations}>No hay donaciones registradas.</Text>
       ) : (
         donations.map((item, index) => (
-          <View key={index} style={styles.card}>
-            <Button
+          <Animated.View key={index} style={styles.animatedCard}>
+            <Card
+              style={[
+                styles.card,
+                selectedDonation === index && styles.selectedCard,
+              ]}
               onPress={() => toggleDonationDetails(index)}
-              mode="contained"
-              style={styles.donationButton}
-              icon="information"
-              contentStyle={styles.buttonContent}
-              labelStyle={styles.buttonLabel}
             >
-              {`Donación ${index + 1}: ${item.quantity} ${item.unit}`}
-            </Button>
-            {selectedDonation === index && (
-              <View style={styles.detailsContainer}>
-                <Text>
-                  <Text style={{ fontWeight: "bold" }}>
-                    Fecha de Caducidad:{" "}
-                  </Text>
-                  <Text style={styles.text}>
+              <Card.Title
+                title={`Donación ${index + 1}: ${item.quantity} ${item.unit}`}
+                left={() => <Info color={"#e02e2e"} size={25} />} // Icono llamativo
+              />
+              {selectedDonation === index && (
+                <Card.Content style={styles.cardContent}>
+                  <Paragraph>
+                    <Text style={styles.boldText}>
+                      <Carrot color="black" /> Alimeto:{" "}
+                    </Text>
+                    {item.comments}
+                  </Paragraph>
+                  <Paragraph>
+                    <Text style={styles.boldText}>
+                      <Calendar color="black" /> Fecha de Caducidad:{" "}
+                    </Text>
                     {new Date(item.expirationDate).toLocaleDateString()}
-                  </Text>
-                </Text>
-                <Text>
-                  <Text style={{ fontWeight: "bold" }}>Ubicación: </Text>
-                  <Text style={styles.text}>{item.location}</Text>
-                </Text>
-                <Text>
-                  <Text style={{ fontWeight: "bold" }}>Comentarios: </Text>
-                  <Text style={styles.text}>{item.comments}</Text>
-                </Text>
-                <Text>
-                  <Text style={{ fontWeight: "bold" }}>Urgente: </Text>
-                  <Text style={styles.text}>{item.urgent ? "Sí" : "No"}</Text>
-                </Text>
-              </View>
-            )}
-          </View>
+                  </Paragraph>
+                  <Paragraph>
+                    <Text style={styles.boldText}>
+                      <MapPin color="black" /> Ubicación:{" "}
+                    </Text>
+                    {item.location}
+                  </Paragraph>
+                  <Paragraph>
+                    <Text style={styles.boldText}>
+                      <AlertCircle color="black" />{" "}
+                      Urgente:{" "}
+                    </Text>
+                    {item.urgent ? "Sí" : "No"}
+                  </Paragraph>
+                </Card.Content>
+              )}
+            </Card>
+          </Animated.View>
         ))
       )}
       <Button
-        style={styles.button}
+        style={styles.buttonNewDonation}
+        mode="contained"
+        onPress={() => navigation.navigate("NewDonation")}
+      >
+        Nueva Donación
+      </Button>
+      <Button
+        style={styles.buttonBack}
         mode="contained"
         onPress={() => navigation.navigate("Home")}
       >
         Volver al Inicio
       </Button>
-    </ScrollView>
+    </KeyboardAwareScrollView>
   );
 }
 
@@ -117,55 +123,45 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 10,
-    backgroundColor: "white",
+    backgroundColor: "#ffffff",
   },
   title: {
-    fontSize: 26,
-    marginBottom: 10,
-    textAlign: "center",
+    fontSize: 28,
     fontWeight: "bold",
+    textAlign: "center",
+    marginVertical: 20,
+    color: "black",
   },
   noDonations: {
     textAlign: "center",
-    marginTop: 20,
     fontSize: 16,
     color: "#888",
   },
   card: {
-    marginBottom: 10,
-    borderRadius: 8,
-    backgroundColor: "white",
-    padding: 10,
-  },
-  donationButton: {
-    marginBottom: 5,
-    backgroundColor: "#FFC300",
-    borderRadius: 30,
+    marginBottom: 12,
+    borderRadius: 10,
     elevation: 3,
+    backgroundColor: "#f9f9f9",
   },
-  buttonContent: {
-    flexDirection: "row",
-    justifyContent: "flex-start", // Alinear el contenido a la izquierda
-    alignItems: "center",
-    paddingVertical: 10,
+  selectedCard: {
+    backgroundColor: "#fff051", // Cambio de color al seleccionar
+    elevation: 6,
   },
-  buttonLabel: {
-    fontSize: 16,
-    color: "#000",
-    marginLeft: 10,
-    paddingLeft: 10, // Agregar padding a la izquierda del texto
+  cardContent: {
+    paddingTop: 10,
   },
-  detailsContainer: {
-    padding: 10,
-    backgroundColor: "#fff",
-    borderRadius: 8,
-  },
-  text: {
-    fontSize: 16,
+  boldText: {
+    fontWeight: "bold",
     marginBottom: 5,
+    color: "black",
   },
-  button: {
-    marginTop: 20,
+  buttonNewDonation: {
+    marginTop: 16,
+    backgroundColor: "#FFC300",
+  },
+  buttonBack: {
+    marginTop: 10,
+    marginBottom: 25,
     backgroundColor: "#e02e2e",
   },
 });

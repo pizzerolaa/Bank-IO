@@ -4,7 +4,6 @@ import {
   Card,
   Title,
   Paragraph,
-  useTheme,
   DataTable,
 } from "react-native-paper";
 import { Users, MapPin, TrendingUp } from "lucide-react-native";
@@ -149,6 +148,7 @@ const styles = StyleSheet.create({
   },
   card: {
     marginBottom: 16,
+    backgroundColor: "white",
   },
   statRow: {
     flexDirection: "row",
