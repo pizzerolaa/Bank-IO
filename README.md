@@ -1,90 +1,124 @@
-# Bank-IO
+# 🏦 Bank-IO
 
-Bank-IO is a mobile application developed using Expo (React Native) that facilitates food donations to food banks. The app allows users to register, log in, make donations, track their donation history, and view their impact.
+![Bank-IO Logo](https://bdalimentos.org/wp-content/uploads/2021/01/logo-2.svg)
 
-## Features
+**Empowering Communities Through Food Donation**
 
-- User authentication (login and registration)
-- Create and manage food donations
-- Track donation status
-- View donation history
-- Visualize donation impact
-- Reward system for donors
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![React Native](https://img.shields.io/badge/React%20Native-v0.71-blue.svg)](https://reactnative.dev/)
+[![Expo](https://img.shields.io/badge/Expo-v48-black.svg)](https://expo.dev/)
+[![Node.js](https://img.shields.io/badge/Node.js-v18-green.svg)](https://nodejs.org/)
 
-## Tech Stack
+[Features](#✨-features) • [Tech Stack](#🛠️-tech-stack) • [Getting Started](#🚀-getting-started) • [Project Structure](#📁-project-structure) • [Contributing](#🤝-contributing) • [License](#📄-license)
 
-- Frontend: React Native with Expo
-- UI Components: React Native Paper
-- Backend: Node.js with Express.js
-- Database: MongoDB with Mongoose
-- State Management: (To be specified, e.g., Redux, Context API)
 
-## Prerequisites
+## 📋 About
 
-- Node.js
+Bank-IO is a cutting-edge mobile application developed with Expo (React Native) that bridges the gap between food donors and food banks. Our platform simplifies the process of food donation, allowing users to make a tangible impact on their communities with just a few taps.
+
+## ✨ Features
+
+- 🔐 Secure user authentication (login and registration)
+- 🍎 Intuitive donation creation and management
+- 📊 Real-time donation status tracking
+- 📜 Comprehensive donation history
+- 📈 Visual representation of donation impact
+- 🏆 Engaging reward system for donors
+- 📱 QR code generation and scanning for swift donation retrieval
+
+## 🛠️ Tech Stack
+
+- **Frontend**: React Native with Expo
+- **UI Components**: React Native Paper
+- **Backend**: Node.js with Express.js
+- **Database**: MongoDB with Mongoose
+- **State Management**: React Hooks
+- **Security**: Crypto and Bcrypt
+- **Testing**: Jest and ESLint
+
+## 🚀 Getting Started
+
+### Prerequisites
+
+- Node.js (v18 or later)
 - npm or yarn
 - Expo CLI
 - MongoDB
 
-## Installation
+### Installation
 
 1. Clone the repository:
-   ```
+   ```bash
    git clone https://github.com/pizzerolaa/Bank-IO.git
    cd Bank-IO
    ```
 
 2. Install dependencies:
+   ```bash
+   npm install --force
    ```
-   npm install
+   or
+   ```bash
+   npm install --legacy-peer-deps
    ```
 
-3. Set up your MongoDB database and update the connection string in the backend configuration.
+3. Set up your MongoDB database and update the connection string in `backend/server.js`.
 
 4. Start the backend server:
-   ```
+   ```bash
    cd backend
    npm start
    ```
 
-5. Start the Expo development server:
+5. Launch the Expo development server:
+   ```bash
+   npm start
    ```
-   expo start
-   ```
 
-## Project Structure
+## 📁 Project Structure
 
-- `/src`: Contains the React Native application code
-  - `/components`: Reusable React components
-  - `/screens`: Individual screen components
-  - `/navigation`: Navigation configuration
-  - `/services`: API and other service functions
-  - `/utils`: Utility functions and helpers
-- `/backend`: Contains the Node.js/Express backend code
-  - `/models`: Mongoose models for MongoDB
-  - `/routes`: Express route definitions
-  - `/controllers`: Business logic for routes
+```
+Bank-IO/
+├── app/
+│   ├── assets/
+│   └── pages/
+│       └── home_pages/
+├── backend/
+│   ├── controllers/
+│   ├── models/
+│   └── routes/
+├── tests/
+└── README.md
+```
 
-## Main Screens
+## 📱 Main Screens
 
-1. Login (Login.tsx)
-2. Home (Home.tsx)
-3. New Donation Form (new_donation.tsx)
-4. Donation Confirmation (donation_confirmation.tsx)
-5. Donation Tracking (donation_tracking.tsx)
-6. Donation Impact (donation_impact.tsx)
-7. Previous Donations (prev_donations.tsx)
-8. Rewards (see_Rewards.tsx)
+1. **Login** (`Login.tsx`)
+2. **Home** (`Home.tsx`)
+3. **New Donation Form** (`new_donation.tsx`)
+4. **Donation Confirmation** (`donation_confirmation.tsx`)
+5. **Donation Details** (`donation_detail.tsx`)
+6. **Donation Tracking** (`donation_tracking.tsx`)
+7. **Donation Impact** (`donation_impact.tsx`)
+8. **Previous Donations** (`prev_donations.tsx`)
+9. **Rewards** (`see_Rewards.tsx`)
+10. **QR Code Scanner** (`qrScanner.tsx`)
+11. **QR Code Data** (`codeSuccess.tsx`)
 
-## Contributing
+## 🤝 Contributing
 
-Please read [CONTRIBUTING.md](CONTRIBUTING.md) for details on our code of conduct and the process for submitting pull requests.
+We welcome contributions to Bank-IO! Please read our [Contributing Guidelines](CONTRIBUTING.md) for details on our code of conduct and the process for submitting pull requests.
 
-## License
+## 📄 License
 
-This project is licensed under the [MIT License](LICENSE).
+Bank-IO is open source software [licensed as MIT](LICENSE).
 
-## Acknowledgments
+## 🙏 Acknowledgments
 
-- Thanks to all contributors who have helped shape Bank-IO.
-- Special thanks to the food banks and donors who inspire this project.
+- 💖 Heartfelt thanks to all contributors who have helped shape Bank-IO.
+- 🍲 Special gratitude to the food banks and donors whose tireless efforts inspire this project.
+- 🌟 Shoutout to the open-source community for the amazing tools and libraries that make projects like this possible.
+
+---
+
+Made with ❤️ by Team 27
