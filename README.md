@@ -1,7 +1,5 @@
 # 🏦 Bank-IO
 
-![Bank-IO Logo](https://bdalimentos.org/wp-content/uploads/2021/01/logo-2.svg)
-
 **Empowering Communities Through Food Donation**
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
@@ -15,6 +13,21 @@
 ## 📋 About
 
 Bank-IO is a cutting-edge mobile application developed with Expo (React Native) that bridges the gap between food donors and food banks. Our platform simplifies the process of food donation, allowing users to make a tangible impact on their communities with just a few taps.
+
+## 🏙️ Images
+
+<table>
+  <tr>
+    <td><img src="https://github.com/pizzerolaa/Bank-IO/blob/main/app/assets/images/demo2.PNG" alt="Login" width="250"/></td>
+    <td><img src="https://github.com/pizzerolaa/Bank-IO/blob/main/app/assets/images/demo3.PNG" alt="Donation" width="250"/></td>
+    <td><img src="https://github.com/pizzerolaa/Bank-IO/blob/main/app/assets/images/demo4.PNG" alt="Tracking" width="250"/></td>
+  </tr>
+  <tr>
+    <td align="center">Login</td>
+    <td align="center">Donation</td>
+    <td align="center">Tracking</td>
+  </tr>
+</table>
 
 ## ✨ Features
 
@@ -104,21 +117,6 @@ Bank-IO/
 9. **Rewards** (`see_Rewards.tsx`)
 10. **QR Code Scanner** (`qrScanner.tsx`)
 11. **QR Code Data** (`codeSuccess.tsx`)
-
-## 🏙️ Images
-
-<table>
-  <tr>
-    <td><img src="https://github.com/pizzerolaa/Bank-IO/blob/main/app/assets/images/demo2.PNG" alt="Login" width="250"/></td>
-    <td><img src="https://github.com/pizzerolaa/Bank-IO/blob/main/app/assets/images/demo3.PNG" alt="Donation" width="250"/></td>
-    <td><img src="https://github.com/pizzerolaa/Bank-IO/blob/main/app/assets/images/demo4.PNG" alt="Tracking" width="250"/></td>
-  </tr>
-  <tr>
-    <td align="center">Login</td>
-    <td align="center">Donation</td>
-    <td align="center">Tracking</td>
-  </tr>
-</table>
 
 ## 🤝 Contributing
 
