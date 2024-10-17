@@ -105,6 +105,12 @@ Bank-IO/
 10. **QR Code Scanner** (`qrScanner.tsx`)
 11. **QR Code Data** (`codeSuccess.tsx`)
 
+## 🏙️ Images
+
+[image](https://github.com/pizzerolaa/Bank-IO/tree/main/app/assets/images/demo2.PNG)
+[image](https://github.com/pizzerolaa/Bank-IO/tree/main/app/assets/images/demo3.PNG)
+[image](https://github.com/pizzerolaa/Bank-IO/tree/main/app/assets/images/demo4.PNG)
+
 ## 🤝 Contributing
 
 We welcome contributions to Bank-IO! Please read our [Contributing Guidelines](CONTRIBUTING.md) for details on our code of conduct and the process for submitting pull requests.
