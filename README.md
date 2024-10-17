@@ -107,9 +107,9 @@ Bank-IO/
 
 ## 🏙️ Images
 
-[image](https://github.com/pizzerolaa/Bank-IO/tree/main/app/assets/images/demo2.PNG)
-[image](https://github.com/pizzerolaa/Bank-IO/tree/main/app/assets/images/demo3.PNG)
-[image](https://github.com/pizzerolaa/Bank-IO/tree/main/app/assets/images/demo4.PNG)
+![Login](https://github.com/pizzerolaa/Bank-IO/tree/main/app/assets/images/demo2.PNG)
+![Donation](https://github.com/pizzerolaa/Bank-IO/tree/main/app/assets/images/demo3.PNG)
+![Tracking](https://github.com/pizzerolaa/Bank-IO/tree/main/app/assets/images/demo4.PNG)
 
 ## 🤝 Contributing
 
